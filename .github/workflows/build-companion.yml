@@ -8,6 +8,10 @@ on:
   push:
     tags: [ "v*" ]
 
+# Needed so the tag build can attach the binaries to the GitHub release.
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build (${{ matrix.os }})
