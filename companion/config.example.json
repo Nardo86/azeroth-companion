@@ -1,0 +1,61 @@
+{
+  // ===========================================================================
+  // Azeroth Companion - companion app configuration
+  // Copy this file to "config.json" and edit it. Lines starting with // are
+  // comments and are ignored (URLs keep their // just fine).
+  // Full guide: docs/CONFIG.md
+  // ===========================================================================
+
+  // --- LLM endpoint (OpenAI-compatible /v1/chat/completions) ----------------
+  // Pick ONE provider. Free options (no credit card unless noted):
+  //
+  //   OpenRouter : https://openrouter.ai/api/v1
+  //                model e.g. "meta-llama/llama-3.3-70b-instruct:free"
+  //                (free models end in ":free"; ~20 req/min, 50/day)
+  //   Groq       : https://api.groq.com/openai/v1
+  //                model e.g. "llama-3.3-70b-versatile"  (~30 req/min, 1000/day)
+  //   Gemini     : https://generativelanguage.googleapis.com/v1beta/openai/
+  //                model e.g. "gemini-2.5-flash"  (key from Google AI Studio)
+  //   Ollama     : http://localhost:11434/v1   (fully local & offline, no key)
+  //                model e.g. "llama3.2"  (run `ollama pull llama3.2` first)
+  //
+  // Tip: run `python azeroth_companion.py --list-presets` to print these.
+
+  "endpoint": "https://openrouter.ai/api/v1",
+  "api_key": "PASTE-YOUR-API-KEY-HERE",
+  "model": "meta-llama/llama-3.3-70b-instruct:free",
+
+  // --- assistant behaviour ---------------------------------------------------
+  // Default reply language ("auto" lets the addon decide from the game locale;
+  // the addon's /ac lang setting overrides this per request).
+  "language": "auto",
+  "temperature": 0.4,
+  "max_tokens": 700,
+
+  // Extra system instructions appended to every prompt (persona, server quirks,
+  // "this is Warmane Lordaeron 7x", etc.). Optional.
+  "system_prompt_extra": "",
+
+  // --- runtime ---------------------------------------------------------------
+  "request_timeout": 60,
+  "poll_interval": 1.0,
+
+  // OpenRouter likes these (optional, harmless elsewhere):
+  "http_referer": "https://github.com/Nardo86/azeroth-companion",
+  "x_title": "Azeroth Companion",
+
+  // --- WoW installs ----------------------------------------------------------
+  // The folder that contains BOTH "WTF" and "Interface". Add one entry per
+  // install/client. If you leave this empty the app tries to auto-detect a few
+  // common locations, but setting it explicitly is the most reliable.
+  //
+  // Windows example:  "C:\\Games\\Warmane WoTLK"
+  // Linux/Wine:       "/home/you/Games/wow/drive_c/Program Files/World of Warcraft"
+  // macOS:            "/Applications/World of Warcraft"
+  //
+  // You can also override sub-paths per install with "wtf_path"/"addons_path".
+
+  "wow_installs": [
+    { "path": "C:\\Games\\Warmane WoTLK" }
+  ]
+}

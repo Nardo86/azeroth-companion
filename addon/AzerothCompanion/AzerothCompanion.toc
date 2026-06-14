@@ -1,0 +1,21 @@
+## Interface: 30300
+## Title: Azeroth Companion
+## Notes: In-game AI assistant for quests, dungeons and raids. Bridged to an OpenAI-compatible endpoint via the companion app.
+## Author: Nardo86
+## Version: 0.1.0
+## SavedVariables: AzerothCompanionDB
+## SavedVariablesPerCharacter: AzerothCompanionCharDB
+## OptionalDeps: Questie
+## X-Website: https://github.com/Nardo86/azeroth-companion
+## X-Category: Chat/Communication
+
+Libs\json.lua
+Libs\base64.lua
+Core\Compat.lua
+Core\Config.lua
+Core\Context.lua
+Core\Questie.lua
+Core\Bridge.lua
+_Inbox.lua
+UI\ChatFrame.lua
+Core\Init.lua

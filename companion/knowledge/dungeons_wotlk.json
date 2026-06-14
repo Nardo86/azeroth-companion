@@ -1,0 +1,1309 @@
+{
+  "expansion": "wotlk",
+  "instances": [
+    {
+      "name": "Utgarde Keep",
+      "aliases": [
+        "UK",
+        "UTK"
+      ],
+      "type": "dungeon",
+      "levelRange": "Normal 68-72; Heroic 80",
+      "generalTips": [
+        "First WotLK dungeon; very forgiving on normal, tight on heroic at gearing level.",
+        "Vrykul + caster mixes - LoS pulls around pillars to group casters.",
+        "Bring interrupts for Dalronn's Shadow Bolts and CC for Keleseth's skeletons."
+      ],
+      "bosses": [
+        {
+          "name": "Prince Keleseth",
+          "summary": "Frost Tomb encases a random player; constant Vrykul Skeleton adds throughout fight.",
+          "positioning": "Stack loosely near boss so freed players are healable; tank faces boss anywhere.",
+          "tank": [
+            "Pick up respawning Vrykul Skeletons immediately - they hit casters.",
+            "Hold boss steady; no movement requirement."
+          ],
+          "healer": [
+            "Frost Tomb deals ticking frost dmg - top the tombed player while DPS frees them.",
+            "Watch melee taking add damage."
+          ],
+          "dps": [
+            "Instantly switch to break Frost Tomb (player frozen, taking dmg).",
+            "AoE/cleave the constant skeleton spawns.",
+            "Achievement 'On The Rocks': kill him without shattering any Frost Tomb."
+          ]
+        },
+        {
+          "name": "Skarvald the Constructor & Dalronn the Controller",
+          "summary": "Dual boss; first to die returns as a ghost, so balance damage to kill near-simultaneously.",
+          "positioning": "Tank both together; Skarvald charges, so keep group out of charge lanes.",
+          "tank": [
+            "Grab both - Skarvald (melee, charges, knockback) and Dalronn (caster).",
+            "Pull Dalronn into melee to limit his Shadow Bolt casting."
+          ],
+          "healer": [
+            "Heal through Skarvald's charge stun + physical burst.",
+            "Dispel Dalronn's Debilitate (cast-speed slow) on healers if possible."
+          ],
+          "dps": [
+            "Split/balance damage - kill both within seconds of each other to minimize ghost phase.",
+            "Interrupt Dalronn's Shadow Bolts.",
+            "Whoever dies first becomes a ghost that keeps fighting - don't over-focus one."
+          ]
+        },
+        {
+          "name": "Ingvar the Plunderer",
+          "summary": "Two-phase; dies in P1, rez'd by valkyr into shadow P2 with Dark Smash and Shadow Axes.",
+          "positioning": "Tank against a pillar to LoS Smash/Dark Smash; keep boss faced away from party.",
+          "tank": [
+            "Face Ingvar AWAY from group - frontal Cleave/Smash hits party otherwise.",
+            "Stand near a pillar to line-of-sight (interrupt) his Smash and P2 Dark Smash casts.",
+            "Pop a cooldown for Dark Smash (heavy hit + stun)."
+          ],
+          "healer": [
+            "Big tank spike on Smash/Dark Smash - pre-heal.",
+            "P2 Woe Strike reduces healing received on tank; heal harder.",
+            "Dispel Staggering/Dreadful Roar effects if able."
+          ],
+          "dps": [
+            "Move out of spawned Shadow Axe (P2) - they whirl and hit hard.",
+            "Avoid the frontal cone; attack from the rear flank.",
+            "Burn both phases; P2 is a fresh full-health shadow version."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Nexus",
+      "aliases": [
+        "Nexus",
+        "NEX"
+      ],
+      "type": "dungeon",
+      "levelRange": "Normal 69-73; Heroic 80",
+      "generalTips": [
+        "Heavy arcane/frost magic damage throughout - magic resist/cleanse helps.",
+        "Mostly mobile fights; keep moving on Keristrasza and during Telestra splits.",
+        "Bring dispels for roots/Arcane Attraction."
+      ],
+      "bosses": [
+        {
+          "name": "Grand Magus Telestra",
+          "summary": "At 50% splits into 3 mirror images (Fire/Frost/Arcane); reforms when an image type is killed.",
+          "positioning": "Spread out for Firebomb; ranged at distance to dodge Ice Nova/Gravity Well.",
+          "tank": [
+            "Pick up all 3 clones on split; keep them apart-ish for cleave control.",
+            "Frost clone roots/slows - reposition as needed."
+          ],
+          "healer": [
+            "Heal through Firebomb DoT and Ice Nova burst during split.",
+            "Use instant casts after Gravity Well knock-up."
+          ],
+          "dps": [
+            "Spread to avoid Firebomb chaining.",
+            "On split, focus and CC/interrupt the clones; killing one type reforms her at low HP.",
+            "Frost clone = Blizzard/root, Fire clone = Fire Blast, Arcane clone = Time Stop/teleport - interrupt where possible."
+          ]
+        },
+        {
+          "name": "Anomalus",
+          "summary": "Spawns Chaotic Rifts that make him IMMUNE while active; rifts spawn Crazed Mana-Wraiths.",
+          "positioning": "Stack near boss for fast rift swaps; ranged kill rifts on spawn.",
+          "tank": [
+            "Hold boss; not much movement.",
+            "Pick up Mana-Wraith adds from rifts."
+          ],
+          "healer": [
+            "Dispel Arcane Attraction (pulls player to rift) off targets.",
+            "Steady raid damage from rift AoE - keep topped."
+          ],
+          "dps": [
+            "Boss is IMMUNE while a Chaotic Rift is open - swap to kill the rift instantly.",
+            "Kill Mana-Wraith adds spawning from rifts.",
+            "Resume boss DPS only after rift closes."
+          ]
+        },
+        {
+          "name": "Ormorok the Tree-Shaper",
+          "summary": "Crystal Spikes erupt in lines from random players (knock-up); casts Spell Reflection; Frenzy at 25%.",
+          "positioning": "Spread out so Crystal Spike lines don't chain; melee/ranged on flanks.",
+          "tank": [
+            "Face boss away; hold through Frenzy (haste buff) at 25%.",
+            "Trample is a frontal charge - keep group out of front."
+          ],
+          "healer": [
+            "Crystal Spikes hit and knock up - heal spike damage; spread to avoid.",
+            "Tank takes more during 25% Frenzy."
+          ],
+          "dps": [
+            "STOP casting during Spell Reflection (reflects spells back) - melee through it or wait it out.",
+            "Spread to avoid Crystal Spike lines erupting under you.",
+            "Burn through Frenzy at 25%."
+          ]
+        },
+        {
+          "name": "Keristrasza",
+          "summary": "Intense Cold: standing still stacks heavy frost dmg - NEVER stop moving. Roots players; Crystalfire Breath frontal.",
+          "positioning": "Everyone strafe/move constantly; non-tanks attack from the SIDES (avoid breath + tail).",
+          "tank": [
+            "Keep moving even while tanking (jump/strafe) to drop Intense Cold stacks.",
+            "Face Crystalfire Breath away from group."
+          ],
+          "healer": [
+            "Move while casting - your own Intense Cold will kill you if static.",
+            "Dispel Crystal Chains (root) fast so rooted players can move again.",
+            "Watch for 25% enrage burst."
+          ],
+          "dps": [
+            "Constant movement - jumping resets the Intense Cold stack.",
+            "Attack from the sides; avoid frontal Crystalfire Breath and Tail Sweep.",
+            "Achievement 'Intense Cold': never let your stack exceed 2.",
+            "She enrages at 25% - blow cooldowns and finish."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Azjol-Nerub",
+      "aliases": [
+        "AN",
+        "Azjol"
+      ],
+      "type": "dungeon",
+      "levelRange": "Normal 72-74; Heroic 80",
+      "generalTips": [
+        "Short 3-boss dungeon, spider/nerubian themed.",
+        "Add control is the whole dungeon - AoE and interrupts matter.",
+        "Hadronox fight relies on letting the boss clear its own adds in the tunnel."
+      ],
+      "bosses": [
+        {
+          "name": "Krik'thir the Gatewatcher",
+          "summary": "Watcher adds (Gashtooth/Skitterer/etc.) before/with boss; Mind Flay + Curse of Fatigue; Frenzy at low HP.",
+          "positioning": "Tank boss + adds together; ranged spread slightly for Web Wrap.",
+          "tank": [
+            "Grab the 3 named watchers and Skittering Swarmers - high add count.",
+            "Pop a cooldown on Frenzy near death."
+          ],
+          "healer": [
+            "Heavy AoE add damage - strong throughput needed.",
+            "Dispel Curse of Fatigue (movement/cast slow) if able."
+          ],
+          "dps": [
+            "AoE down the Swarmers/Skitterers fast; interrupt Krik'thir's Mind Flay.",
+            "Kill the watcher adds before tunneling boss."
+          ]
+        },
+        {
+          "name": "Hadronox",
+          "summary": "Climbs up tunnel fighting endless spider adds; Web Grab pulls everyone in; Leech Poison heals him; Acid Clouds on ground.",
+          "positioning": "Let Hadronox ascend and clear his own adds; pull him to the top ramp/doorway only when adds are dead.",
+          "tank": [
+            "Face boss away from group (Pierce Armor); kite up the tunnel as he eats his adds.",
+            "Engage for real near the top once accumulated adds are cleared."
+          ],
+          "healer": [
+            "Dispel Leech Poison FAST - it heals him massively, especially after Web Grab pulls everyone in.",
+            "Heal AoE from Acid Cloud and add cleave."
+          ],
+          "dps": [
+            "Don't burn the boss too early - let him kill the spider waves himself.",
+            "After Web Grab pull-in, ranged run back out; everyone move out of Acid Clouds.",
+            "Heroic achievement 'Watch Him Die': kill him before he webs/destroys the top doors."
+          ]
+        },
+        {
+          "name": "Anub'arak",
+          "summary": "Pound (huge tank hit + stun); submerges at 75/50/25% spawning Nerubians; Impale spikes + Leeching Swarm.",
+          "positioning": "Face boss AWAY from party; spread for Impale; stay mobile while he's burrowed.",
+          "tank": [
+            "Face away - Pound (frontal, ~18k + 4s stun) must not hit the group.",
+            "Pre-pop cooldown for Pound casts.",
+            "Re-grab boss after each emerge."
+          ],
+          "healer": [
+            "Pound is a massive tank spike - pre-heal the 3s cast.",
+            "Leeching Swarm drains health % - keep everyone above the drain.",
+            "Heal add-phase damage during submerge."
+          ],
+          "dps": [
+            "During submerge (75/50/25%), kill the spawned Nerubians to force him back up.",
+            "Spread for Impale (spikes through floor, knock-up) while he's burrowed.",
+            "Heroic 'Hadronox Denied'/speed: kill within ~4 min for the Gauntlet achievement."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ahn'kahet: The Old Kingdom",
+      "aliases": [
+        "AK",
+        "Old Kingdom",
+        "OK"
+      ],
+      "type": "dungeon",
+      "levelRange": "Normal 73-75; Heroic 80",
+      "generalTips": [
+        "Sprawling nerubian/Old God dungeon; 3 core bosses + 2 optional (Amanitar, Jedoga depending on path).",
+        "Disease/poison dispels are valuable throughout.",
+        "Herald Volazj's Insanity is the standout mechanic - know your clone fight."
+      ],
+      "bosses": [
+        {
+          "name": "Elder Nadox",
+          "summary": "Spawns Ahn'kahar Guardians; while a Guardian is alive Nadox is IMMUNE (Guardian Aura). Brood Plague disease + Brood Rage on adds.",
+          "positioning": "Tank boss centrally; melee can cleave adds; ranged kill Guardian on spawn.",
+          "tank": [
+            "Pick up the Swarm Guards and the elite Ahn'kahar Guardian adds.",
+            "Hold boss while DPS swaps to Guardians."
+          ],
+          "healer": [
+            "Dispel Brood Plague (stacking disease DoT) off the group constantly.",
+            "AoE add damage to heal through."
+          ],
+          "dps": [
+            "Kill the Ahn'kahar Guardian immediately - boss is immune while it lives.",
+            "Heroic: a Guardian respawns on a timer - be ready to swap.",
+            "Achievement 'Respect Your Elders': kill him before any Guardian spawns (rush DPS)."
+          ]
+        },
+        {
+          "name": "Prince Taldaram",
+          "summary": "Conjure Flame Sphere (slow-moving fire orbs) + Embrace of the Vampyr: vanishes and stun-drains a random player who needs freeing via damage.",
+          "positioning": "Spread to dodge Flame Spheres; keep clear lanes between players.",
+          "tank": [
+            "Re-establish threat after each Vanish/Embrace.",
+            "Keep boss steady so DPS can find the embraced target."
+          ],
+          "healer": [
+            "Embraced player takes a draining stun - heal them until freed.",
+            "Move out of Flame Sphere paths while casting."
+          ],
+          "dps": [
+            "Immediately burn the player caught in Embrace of the Vampyr to free them.",
+            "Strafe out of the two Conjured Flame Spheres orbiting the room."
+          ]
+        },
+        {
+          "name": "Jedoga Shadowseeker",
+          "summary": "Adds initiation phase: a Twilight Volunteer runs to her to be sacrificed for Gift of the Herald (big buff); interrupt/kill it.",
+          "positioning": "Ranged spread for Lightning Bolt/Thundershock; melee avoid Cyclone Strike point-blank AoE.",
+          "tank": [
+            "Hold boss during ground phase; she ascends periodically (untauntable in air).",
+            "Re-grab when she lands."
+          ],
+          "healer": [
+            "Thundershock is a nova AoE - keep group topped.",
+            "Heal through if a Volunteer reaches her (boss buffed/empowered)."
+          ],
+          "dps": [
+            "When she ascends, STOP the chosen Twilight Volunteer running to her - kill it before contact or she gains Gift of the Herald.",
+            "Interrupt her Lightning Bolt."
+          ]
+        },
+        {
+          "name": "Amanitar",
+          "summary": "Heroic-only. Spawns Healthy (good) and Poisonous (bad) Mushrooms; killing a Healthy mushroom drops a cleanse zone for the Mini debuff. Entangling Roots + Venom Bolt Volley.",
+          "positioning": "Tank boss away from mushroom clusters; group stands in Healthy mushroom burst to cleanse Mini.",
+          "tank": [
+            "Move boss away from spawning Poisonous Mushrooms.",
+            "Hold through Bash stun."
+          ],
+          "healer": [
+            "Dispel Mini (shrinks/weakens) and Entangling Roots; AoE Venom Bolt damage.",
+            "Direct group to stand in dying Healthy Mushroom cloud to remove Mini."
+          ],
+          "dps": [
+            "Kill Healthy Mushrooms to create the cleanse cloud; do NOT kill Poisonous ones (they explode).",
+            "Heroic only - watch which mushroom is which."
+          ]
+        },
+        {
+          "name": "Herald Volazj",
+          "summary": "At 66% and 33% casts Insanity: each player is phased alone to fight shadow clones of the whole party; clear them to rejoin.",
+          "positioning": "Spread for Shadow Bolt Volley; in Insanity, fight your clones in your own phase.",
+          "tank": [
+            "In Insanity, your clones have low HP - DPS them; you may need to self-sustain.",
+            "Re-grab boss after each Insanity phase ends."
+          ],
+          "healer": [
+            "During Insanity you must survive solo (clones of party) - use everything to stay alive, then help others.",
+            "Between phases, heal Shadow Bolt Volley / Mind Flay damage."
+          ],
+          "dps": [
+            "In Insanity, kill your set of clones (they have reduced HP); focus-fire to exit phase faster.",
+            "Once out, help party members still phased.",
+            "Interrupt Mind Flay; spread for Shadow Bolt Volley."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Drak'Tharon Keep",
+      "aliases": [
+        "DTK",
+        "Drak"
+      ],
+      "type": "dungeon",
+      "levelRange": "Normal 74-76; Heroic 80",
+      "generalTips": [
+        "Drakkari troll keep; lots of trash with corpse/explosion themes.",
+        "Bring fear protection (King Dred) and interrupts (Novos).",
+        "AoE is strong here - many add-heavy fights."
+      ],
+      "bosses": [
+        {
+          "name": "Trollgore",
+          "summary": "Invading Drakkari adds run in; Consume stacks his damage by eating corpses; Corpse Explode detonates corpses for AoE.",
+          "positioning": "Tank boss away from add piles; group avoids standing in/near corpses.",
+          "tank": [
+            "Hold boss + the streaming Drakkari Invaders.",
+            "Face boss away so Crush/Infected Wound bleed hits only you."
+          ],
+          "healer": [
+            "Corpse Explode AoE + stacking Consume = rising raid/tank damage - DPS race.",
+            "Keep tank topped through Infected Wound bleed."
+          ],
+          "dps": [
+            "Don't let corpses pile - Consume buffs him per body eaten; kill boss before stacks snowball.",
+            "Avoid standing in Corpse Explode radius.",
+            "AoE the invading adds."
+          ]
+        },
+        {
+          "name": "Novos the Summoner",
+          "summary": "Shielded by Arcane Field; summon channel sends waves of undead (incl. Crystal Handlers) - kill the 4 Crystal Handlers to drop his shield.",
+          "positioning": "Tank holds the chamber; assign ranged to pick off climbing adds before they reach the platform.",
+          "tank": [
+            "Grab the summoned undead waves (Risen/Fetid/Hulking adds).",
+            "Once shield drops, hold boss and finish; he resummons if you stall."
+          ],
+          "healer": [
+            "Move out of his Blizzard; heal steady add-wave damage during shield phase.",
+            "Dispel/heal Wrath of Misery and Frostbolt damage."
+          ],
+          "dps": [
+            "Kill the 4 Crystal Handlers - boss is IMMUNE (Arcane Field) until they die.",
+            "Control/AoE the undead so they don't overwhelm; then burn boss.",
+            "Heroic 'Oh Novos!': don't let any add reach the top - CC/AoE the ramps."
+          ]
+        },
+        {
+          "name": "King Dred",
+          "summary": "Devilsaur raptor; brutal tank damage (Grievous Bite bleed + Mangling/Piercing Slash); Bellowing Roar fear; calls Raptor reinforcements.",
+          "positioning": "Clear nearby roaming raptors BEFORE pulling; tank in a corner so fear doesn't drag you into adds.",
+          "tank": [
+            "Massive tank damage - pop cooldowns; tank near a wall to limit fear movement.",
+            "Grievous Bite is a healing-reducing bleed - keep it from stacking high."
+          ],
+          "healer": [
+            "Hardest tank-damage fight here - spam tank, watch Grievous Bite (reduces healing received).",
+            "Be ready to heal through Bellowing Roar fear scatter."
+          ],
+          "dps": [
+            "Use fear breaks/immunities (Berserker Rage, tremor, etc.) for Bellowing Roar.",
+            "Pre-clear the patrolling raptors so feared players don't pull more.",
+            "Heroic 'Better Off Dred': let 6 Drakkari Guardians (raptors) be alive when he dies."
+          ]
+        },
+        {
+          "name": "The Prophet Tharon'ja",
+          "summary": "P1 caster (Curse of Life, Rain of Fire, Shadow Volley). P2 Gift of Tharon'ja: strips your gear/abilities, turns party to skeletons with role-swap skills.",
+          "positioning": "P1 spread for Rain of Fire; P2 reposition for Eye Beam/Lightning Breath frontal.",
+          "tank": [
+            "P2: use the skeleton Taunt + Bone Armor to keep aggro while transformed.",
+            "P1: face boss away (Shadow Volley/Decay Flesh)."
+          ],
+          "healer": [
+            "P2: you lose normal heals - use 'Touch of Life' skeleton ability to heal.",
+            "P1: dispel/heal Curse of Life (heals get reversed) and Rain of Fire."
+          ],
+          "dps": [
+            "P2: use 'Slaying Strike' skeleton ability; survive until Return Flesh ends the phase.",
+            "P1: interrupt/spread for Shadow Volley; move out of Rain of Fire.",
+            "Curse of Life in P1 turns healing into damage - dispel it."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Violet Hold",
+      "aliases": [
+        "VH",
+        "Violet"
+      ],
+      "type": "dungeon",
+      "levelRange": "Normal 75-77; Heroic 80",
+      "generalTips": [
+        "Wave-defense event: portals spawn add waves; mini-boss after wave 6 and wave 12 (random of Erekem/Moragg/Ichoron/Xevozz/Lavanthor/Zuramat), Cyanigosa always after wave 18.",
+        "Stack on the central portal pad; assign someone to call which portal spawns next.",
+        "Activate the Defense Crystals (NPC console) only if struggling - skipping them is required for the 'Defenseless' achievement.",
+        "Each random mini-boss is one of six - know all six since you don't pick."
+      ],
+      "bosses": [
+        {
+          "name": "Erekem",
+          "summary": "Arena boss with 2 Vrykul healer adds (Earth Shield/Chain Heal); Bloodlust enrage. Kill/interrupt the healers first.",
+          "positioning": "Spread boss and his 2 adds enough to interrupt all heal casts.",
+          "tank": [
+            "Grab Erekem + both Vrykul adds; keep them grouped for interrupt rotation."
+          ],
+          "healer": [
+            "Heal through Bloodlust burst once adds are down.",
+            "Cleanse if able."
+          ],
+          "dps": [
+            "Kill/CC the 2 healer adds first and INTERRUPT their Chain Heal / Earth Shock.",
+            "Purge Earth Shield off adds."
+          ]
+        },
+        {
+          "name": "Moragg",
+          "summary": "Simple beholder; heavy DoTs via Optic Link, Ray of Pain, Ray of Suffering, Corrosive Saliva.",
+          "positioning": "Tank anywhere; group stays near for healing.",
+          "tank": [
+            "Straightforward tank-and-spank; hold threat."
+          ],
+          "healer": [
+            "Keep DoT-debuffed targets (Optic Link/Ray of Pain) topped - sustained damage fight."
+          ],
+          "dps": [
+            "Pure burn; nothing to dodge - just DPS down."
+          ]
+        },
+        {
+          "name": "Ichoron",
+          "summary": "Water elemental with Protective Bubble (must land ~35 hits to pop); on burst splits into Ichor Globules that re-merge and heal her if they reach her.",
+          "positioning": "Stay SPREAD so Water Bolt Volley/Water Blast don't chain; surround to intercept globules.",
+          "tank": [
+            "Hold boss; help control globule movement toward her."
+          ],
+          "healer": [
+            "Heal Water Bolt Volley AoE; stay spread."
+          ],
+          "dps": [
+            "Break the Protective Bubble fast, then KILL the 10 Ichor Globules before they reach Ichoron (each merge heals her + can Frenzy).",
+            "Achievement 'Dehydration': let zero globules merge back."
+          ]
+        },
+        {
+          "name": "Xevozz",
+          "summary": "Ethereal caster; Arcane Buffet/Barrage Volley raid damage; summons Ethereal Spheres that chase and must be kited away.",
+          "positioning": "Keep moving - kite the Ethereal Spheres away from the group at all times.",
+          "tank": [
+            "Hold boss; help kite spheres."
+          ],
+          "healer": [
+            "Heal through Arcane Barrage Volley; stay mobile."
+          ],
+          "dps": [
+            "Constantly move away from summoned Ethereal Spheres (they buff him / explode if they reach him).",
+            "Burn boss while kiting."
+          ]
+        },
+        {
+          "name": "Lavanthor",
+          "summary": "Fire elemental; Flame Breath frontal cone; Lava Burn drops persistent fire patches on random players.",
+          "positioning": "Tank faces boss away from group; everyone avoid frontal cone and fire pools.",
+          "tank": [
+            "Face Lavanthor AWAY - Flame Breath is a frontal cone."
+          ],
+          "healer": [
+            "Heal Lava Burn fire-patch DoT; move out of pools yourself."
+          ],
+          "dps": [
+            "Stay out of the frontal Flame Breath and move off Lava Burn fire patches."
+          ]
+        },
+        {
+          "name": "Zuramat the Obliterator",
+          "summary": "Void caster; summons Void Sentry adds; Shroud of Darkness; Void Shift phases a player out (must survive/be healed).",
+          "positioning": "Stack-ish for AoE on Void Sentries; keep party near for healing.",
+          "tank": [
+            "Pick up the Void Sentry adds quickly."
+          ],
+          "healer": [
+            "Keep party at FULL health - Void Shift can be lethal on a low target; dispel Shroud of Darkness if able."
+          ],
+          "dps": [
+            "AoE the Void Sentry adds down fast each spawn, then resume boss.",
+            "Heroic 'Zombiefest!': kill many adds."
+          ]
+        },
+        {
+          "name": "Cyanigosa",
+          "summary": "Final boss blue dragon (always after wave 18); Crystalfire/Uncontrollable Energy frontal + Tail Sweep rear; Arcane Vacuum pulls all in then drops Blizzard.",
+          "positioning": "Tank faces her away from group; non-tanks attack from the SIDES; after Arcane Vacuum re-spread and exit Blizzard.",
+          "tank": [
+            "Face dragon away (frontal breath); hold steady."
+          ],
+          "healer": [
+            "Heal Mana Destruction / breath damage; move out of Blizzard after the vacuum pull."
+          ],
+          "dps": [
+            "Attack from the sides (avoid frontal breath + Tail Sweep).",
+            "When Arcane Vacuum pulls everyone in, immediately spread back out and get off the Blizzard patch."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Gundrak",
+      "aliases": [
+        "GD",
+        "Gun'drak"
+      ],
+      "type": "dungeon",
+      "levelRange": "76-80",
+      "generalTips": [
+        "Activate the 3 altars behind Slad'ran, Drakkari Colossus, and Moorabi to open Gal'darah without backtracking.",
+        "Eck the Ferocious is heroic-only and optional (skippable via the elemental gauntlet)."
+      ],
+      "bosses": [
+        {
+          "name": "Slad'ran",
+          "summary": "Snake boss: wraps players in snakes and casts Poison Nova.",
+          "positioning": "Tank boss in place; party stays spread, ranged behind a corner to LoS Poison Nova.",
+          "tank": [
+            "Hold boss steady, don't chase",
+            "Help free anyone Snake-Wrapped if DPS is slow"
+          ],
+          "healer": [
+            "Spot-heal Snake Wrap victims (they're rooted + ticking)",
+            "Top group before Poison Nova"
+          ],
+          "dps": [
+            "Kill summoned snakes and free Snake-Wrapped players ASAP",
+            "Move out of Poison Nova / LoS it"
+          ]
+        },
+        {
+          "name": "Moorabi",
+          "summary": "Casts Transformation to become a mammoth (big damage buff); speeds up as HP drops via Mojo Frenzy.",
+          "positioning": "Standard melee stack; nothing to dodge.",
+          "tank": [
+            "Hold threat; expect a damage spike if transform lands"
+          ],
+          "healer": [
+            "Heal harder as Mojo Frenzy stacks late in fight"
+          ],
+          "dps": [
+            "INTERRUPT every Transformation cast (top priority)",
+            "Burn fast — Mojo Frenzy makes interrupts harder over time"
+          ]
+        },
+        {
+          "name": "Drakkari Colossus",
+          "summary": "Splits out a Living Mojo elemental at 50% and again near death; kill the mojo to end it.",
+          "positioning": "Tank both forms; party avoids ground puddles.",
+          "tank": [
+            "Pick up the Living Mojo immediately when it spawns at 50%"
+          ],
+          "healer": [
+            "Move out of mojo puddles (high damage)"
+          ],
+          "dps": [
+            "Swap to the Living Mojo when it splits off; killing it ends the encounter",
+            "Avoid puddles"
+          ]
+        },
+        {
+          "name": "Gal'darah",
+          "summary": "Final boss; alternates troll and rhino forms. Rhino does Stampede/Whirling Slash; troll does Impaling Charge + bleed.",
+          "positioning": "Spread slightly; ranged out of Impaling Charge line.",
+          "tank": [
+            "Reposition through form swaps (Stampede/Whirling Slash)",
+            "Keep boss facing away from group"
+          ],
+          "healer": [
+            "Burst-heal melee through bleeds and Whirling Slash"
+          ],
+          "dps": [
+            "Watch Impaling Charge target line; melee mind the rhino Whirlwind"
+          ]
+        },
+        {
+          "name": "Eck the Ferocious",
+          "summary": "Optional heroic-only; leaps to a random target (threat reset) and uses frontal Eck Spit.",
+          "positioning": "Keep boss faced away; ranged spread from his leap target.",
+          "tank": [
+            "Re-taunt instantly after Eck Spring (threat reset) and reposition",
+            "Face him away from group"
+          ],
+          "healer": [
+            "Watch whoever he leaps to; cleanse/heal Eck Spit damage"
+          ],
+          "dps": [
+            "Avoid frontal Eck Spit cone"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Halls of Stone",
+      "aliases": [
+        "HoS",
+        "Stone"
+      ],
+      "type": "dungeon",
+      "levelRange": "76-80",
+      "generalTips": [
+        "Tribunal of Ages is a defend-Brann event that unlocks the door to Sjonnir; you must protect Brann while he hacks the console.",
+        "Maiden of Grief and Krystallus can be done in either order."
+      ],
+      "bosses": [
+        {
+          "name": "Krystallus",
+          "summary": "Ground Slam knocks back + petrifies, then Shatter does proximity AoE; also Boulder/Ground Spike.",
+          "positioning": "Stay spread at all times — Shatter and Boulder punish stacking.",
+          "tank": [
+            "Keep boss put; expect knockback from Ground Slam"
+          ],
+          "healer": [
+            "Pre-heal before Shatter; damage scales with how clustered players are"
+          ],
+          "dps": [
+            "Spread out — Shatter hits harder the closer you are to others",
+            "Keep moving after Ground Slam"
+          ]
+        },
+        {
+          "name": "Maiden of Grief",
+          "summary": "Storm of Grief void zone on the floor; Shock of Sorrow is a group stun that also wipes threat.",
+          "positioning": "Tank holds her in place; party stays out of the black Storm of Grief circle.",
+          "tank": [
+            "Re-taunt immediately after Shock of Sorrow (it wipes aggro)"
+          ],
+          "healer": [
+            "Heal through Shock of Sorrow shadow damage",
+            "Stay out of Storm of Grief void zone"
+          ],
+          "dps": [
+            "Move out of Storm of Grief; avoid Pillar of Woe"
+          ]
+        },
+        {
+          "name": "Tribunal of Ages",
+          "summary": "Defend-Brann event: waves of Dark Rune adds (Protectors/Sentinels/Watchers) plus Searing Gaze / Lightning Grid hazards.",
+          "positioning": "Body-block adds before they reach Brann; avoid ground AoE grids.",
+          "tank": [
+            "Grab every wave of adds fast; keep them off Brann"
+          ],
+          "healer": [
+            "Heal Brann if adds reach him; dodge Lightning Grid / Searing Gaze"
+          ],
+          "dps": [
+            "AoE/burn adds before they touch Brann; CC casters",
+            "Avoid floor AoE effects"
+          ]
+        },
+        {
+          "name": "Sjonnir the Ironshaper",
+          "summary": "Spawns dwarf adds from side tubes; Lightning Arc + chain Static Overload; deals heavy melee proximity damage.",
+          "positioning": "Ranged/healer stay well back — he hits hard up close. Tank controls adds.",
+          "tank": [
+            "Manage constant add stream from the tubes while holding the boss"
+          ],
+          "healer": [
+            "Stand far from Sjonnir (high nearby damage); dispel/heal Lightning Arc"
+          ],
+          "dps": [
+            "Ranged keep distance from the boss; help clear adds",
+            "Burn boss fast during late frenzy"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Halls of Lightning",
+      "aliases": [
+        "HoL",
+        "Lightning"
+      ],
+      "type": "dungeon",
+      "levelRange": "79-80",
+      "generalTips": [
+        "Loken is the signature fight: a positioning puzzle (stack in melee for Pulsing Shockwave, spread out for Lightning Nova)."
+      ],
+      "bosses": [
+        {
+          "name": "General Bjarngrim",
+          "summary": "Patrols with adds; cycles Battle/Defensive/Berserker stances (Cleave, Knock Away, Whirlwind/Mortal Strike) and gains an Electrical Charge buff.",
+          "positioning": "Pull adds aside and kill them first (they heal him). Stay out of Whirlwind.",
+          "tank": [
+            "Watch the stance: Berserker = Whirlwind, Defensive = Knock Away",
+            "Pick up the patrolling adds"
+          ],
+          "healer": [
+            "Spike-heal during Whirlwind and while his Electrical Charge buff is up"
+          ],
+          "dps": [
+            "Kill adds first — they heal him",
+            "Get out of melee during Whirlwind"
+          ]
+        },
+        {
+          "name": "Volkhan",
+          "summary": "Spawns Molten/Brittle Golem adds; Shattering Stomp shatters golems for big AoE if they aren't killed.",
+          "positioning": "Spread to limit Shattering Stomp splash; drag golems away from group.",
+          "tank": [
+            "Tank boss + golems together; reposition off corpses"
+          ],
+          "healer": [
+            "Brace for AoE burst when Shattering Stomp hits live golems"
+          ],
+          "dps": [
+            "Kill the golems before they harden and Volkhan stomps them"
+          ]
+        },
+        {
+          "name": "Ionar",
+          "summary": "At ~50% Disperses into Spark of Ionar adds that must be killed/kited; Static Overload + Ball Lightning on players.",
+          "positioning": "Stay spread; Static Overload targets must run away from allies.",
+          "tank": [
+            "Maintain spread to avoid overlapping lightning"
+          ],
+          "healer": [
+            "Heal Static Overload / Ball Lightning targets; burst during Disperse phase"
+          ],
+          "dps": [
+            "If you get Static Overload, run away from the group",
+            "Kill Sparks fast after Disperse"
+          ]
+        },
+        {
+          "name": "Loken",
+          "summary": "Pulsing Shockwave aura does MORE damage the farther you are; Lightning Nova does more damage the closer you are.",
+          "positioning": "STACK in melee on Loken normally; SPREAD/run out only during Lightning Nova cast.",
+          "tank": [
+            "Tank boss and keep the group stacked tight in melee range"
+          ],
+          "healer": [
+            "Stand in melee (Pulsing Shockwave punishes range); pre-heal Lightning Nova"
+          ],
+          "dps": [
+            "Stay stacked on Loken; run out to spread for Lightning Nova, then return"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Oculus",
+      "aliases": [
+        "Oc",
+        "Occu"
+      ],
+      "type": "dungeon",
+      "levelRange": "78-80",
+      "generalTips": [
+        "After Drakos, the last two bosses are fought on drake vehicles: Ruby = tank, Amber = DPS, Emerald = healer.",
+        "Ruby Drake: Martyr/Evasive Maneuvers (threat + absorb); Amber Drake: Shock Lance + Stop Time; Emerald Drake: Touch the Nightmare (drain) + Leeching Poison (group heal).",
+        "On Eregos, an Amber Drake must Stop Time during his Enraged Assault."
+      ],
+      "bosses": [
+        {
+          "name": "Drakos the Interrogator",
+          "summary": "Last ground fight. Magic Pull yanks everyone together; Unstable Spheres spawn and explode for AoE.",
+          "positioning": "Spread after each Magic Pull; keep moving away from Unstable Spheres.",
+          "tank": [
+            "Hold threat through Magic Pulls; reposition out of spheres"
+          ],
+          "healer": [
+            "Heal pull/sphere AoE; stay mobile"
+          ],
+          "dps": [
+            "After Magic Pull re-spread; avoid/kite Unstable Spheres"
+          ]
+        },
+        {
+          "name": "Varos Cloudstrider",
+          "summary": "First drake-vehicle fight. Call Azure Ring Captain fires sweeping Energize beams across the platform.",
+          "positioning": "On drakes — fly to dodge the rotating beams; spread out.",
+          "tank": [
+            "Ruby Drake: build threat, use Evasive Maneuvers to absorb hits"
+          ],
+          "healer": [
+            "Emerald Drake: spam Leeching Poison / drain to keep drakes topped through beams"
+          ],
+          "dps": [
+            "Amber Drake: nuke with Shock Lance while avoiding the beams"
+          ]
+        },
+        {
+          "name": "Mage-Lord Urom",
+          "summary": "Teleports through 3 side rooms (clearing add packs) then settles center; casts Time Bomb and Empowered Arcane Explosion.",
+          "positioning": "Ground fight (no drakes). Hide behind pillars / run out for the big Arcane Explosion.",
+          "tank": [
+            "Gather adds in each teleport room; reposition for the center cast"
+          ],
+          "healer": [
+            "Heal Time Bomb victim before it detonates on nearby players"
+          ],
+          "dps": [
+            "Move away / LoS Empowered Arcane Explosion; spread for Time Bomb"
+          ]
+        },
+        {
+          "name": "Ley-Guardian Eregos",
+          "summary": "Final drake-vehicle fight. Arcane Volley/Barrage AoE; Planar Shift makes him immune + summons Azure Ley-Whelps; Enraged Assault.",
+          "positioning": "Stay on drakes; dodge chasing Planar Anomalies; kill whelps during Planar Shift.",
+          "tank": [
+            "Ruby Drake: hold threat; pop Martyr to redirect drake damage for the kill"
+          ],
+          "healer": [
+            "Emerald Drake: keep all drakes healed through Arcane Volley/Barrage"
+          ],
+          "dps": [
+            "Amber Drake: Stop Time during Enraged Assault; kill Azure Ley-Whelps in Planar Shift",
+            "Avoid Planar Anomalies"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Utgarde Pinnacle",
+      "aliases": [
+        "UP",
+        "Pinnacle"
+      ],
+      "type": "dungeon",
+      "levelRange": "78-80",
+      "generalTips": [
+        "Skadi is a phase-1 gauntlet: loot Harpoons from Ymirjar Harpooners and fire 3 at his drake Grauf to ground him."
+      ],
+      "bosses": [
+        {
+          "name": "Svala Sorrowgrave",
+          "summary": "Ritual of the Sword: teleports a random player up for sacrifice while 3 Ritual Channelers cast on them (heroic).",
+          "positioning": "Free the abducted player; ranged keep DPS on Svala while she's aloft.",
+          "tank": [
+            "Hold Svala; expect Sinister Strike spike damage"
+          ],
+          "healer": [
+            "Keep the sacrificed player alive until adds die; pre-cooldown the ritual"
+          ],
+          "dps": [
+            "Kill the 3 Ritual Channelers fast to save the abducted player"
+          ]
+        },
+        {
+          "name": "Gortok Palehoof",
+          "summary": "Orb releases 4 beast adds one at a time (Furbolg, Worgen, Rhino, Jormungar), then Palehoof himself; frontal Arcing Smash + Impale.",
+          "positioning": "Stay out of his frontal cone; nuke each add before the next.",
+          "tank": [
+            "Pick up each freed beast immediately; keep boss faced away (Arcing Smash/Impale frontal)"
+          ],
+          "healer": [
+            "Heal through Crush stuns on the tank"
+          ],
+          "dps": [
+            "Focus one add at a time; avoid standing in front"
+          ]
+        },
+        {
+          "name": "Skadi the Ruthless",
+          "summary": "P1 gauntlet on his drake Grauf (Freezing Cloud breath); P2 ground fight with Whirlwind, Poisoned Spear, Crush stun.",
+          "positioning": "P1: dodge Grauf's freezing breath, get a Harpoon, fire 3 from the launchers. P2: out of Whirlwind.",
+          "tank": [
+            "P2: hold Skadi, manage Crush stuns and reposition for Whirlwind"
+          ],
+          "healer": [
+            "P1: heal freezing-breath damage; P2: cleanse Poisoned Spear, heal Crush"
+          ],
+          "dps": [
+            "P1: kill Ymirjar Harpooners for Harpoons, fire 3 at Grauf",
+            "P2: avoid Whirlwind"
+          ]
+        },
+        {
+          "name": "King Ymiron",
+          "summary": "Bane buff: if you die while Bane is up you stay dead — stop DPS or remove it. Dark Slash hits for half current HP; Fetid Rot disease; ancestor adds.",
+          "positioning": "Standard; spread modestly for Fetid Rot.",
+          "tank": [
+            "Survive Dark Slash (deals ~50% of current HP) — keep HP high before it"
+          ],
+          "healer": [
+            "Top tank before Dark Slash; dispel Fetid Rot; watch for Bane"
+          ],
+          "dps": [
+            "Stop attacking during Bane (or remove it) so dead players can be rezzed"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Culling of Stratholme",
+      "aliases": [
+        "CoS",
+        "Strat",
+        "Culling"
+      ],
+      "type": "dungeon",
+      "levelRange": "78-80",
+      "generalTips": [
+        "Escort Arthas through zombie waves to 10 crates; bosses spawn between/at the end of waves.",
+        "Heroic: defeat the Infinite Corruptor within 25 minutes (talk to the Crusader to start the timer) for the Bronze Drake mount."
+      ],
+      "bosses": [
+        {
+          "name": "Meathook",
+          "summary": "Constricting Chains roots/chains a player; Disease Expulsion interrupts caster spells.",
+          "positioning": "Casters keep some distance from disease; melee on boss.",
+          "tank": [
+            "Hold threat; position so chained players aren't isolated"
+          ],
+          "healer": [
+            "Heal chained players; expect interrupt from Disease Expulsion"
+          ],
+          "dps": [
+            "Kill any adds first; casters mind Disease Expulsion interrupts"
+          ]
+        },
+        {
+          "name": "Salramm the Fleshcrafter",
+          "summary": "Summons ghouls then Explode Ghoul for AoE; Curse of Twisted Flesh, Steal Flesh, Shadow Bolt Volley.",
+          "positioning": "Spread before ghoul explosions; don't cluster.",
+          "tank": [
+            "Pick up summoned ghouls"
+          ],
+          "healer": [
+            "Dispel Curse of Twisted Flesh; heal through Shadow Bolt Volley"
+          ],
+          "dps": [
+            "Kill ghouls fast; interrupt Steal Flesh; spread to limit Explode Ghoul AoE"
+          ]
+        },
+        {
+          "name": "Chrono-Lord Epoch",
+          "summary": "Time Stop AoE stun, Time Warp slow, Curse of Exertion (drains mana), and a heavy Time Step-style tank hit.",
+          "positioning": "Standard melee; nothing major to dodge.",
+          "tank": [
+            "Brace for his hard-hitting tank buster after Time Stop"
+          ],
+          "healer": [
+            "Burst-heal the tank after stun; watch Curse of Exertion mana drain"
+          ],
+          "dps": [
+            "Remove/handle stacking debuffs; keep DPS up through Time Warp slow"
+          ]
+        },
+        {
+          "name": "Mal'Ganis",
+          "summary": "Final boss; Carrion Swarm frontal AoE, Sleep on a player, Vampiric Touch (heals him + reduces target healing).",
+          "positioning": "Spread around the boss to minimize Carrion Swarm; stay out of its cone.",
+          "tank": [
+            "Hold boss; manage Sleep disruptions"
+          ],
+          "healer": [
+            "Dispel Sleep; counter Vampiric Touch healing reduction"
+          ],
+          "dps": [
+            "Spread out around Mal'Ganis to dodge Carrion Swarm"
+          ]
+        },
+        {
+          "name": "Infinite Corruptor",
+          "summary": "Heroic-only timed boss; must be reached and killed within 25 minutes for the Bronze Drake mount.",
+          "positioning": "Speed-run prior wings; standard tank-and-spank when reached.",
+          "tank": [
+            "Pull and hold quickly — the timer is the real boss"
+          ],
+          "healer": [
+            "Keep group up during the rushed approach"
+          ],
+          "dps": [
+            "Maximize speed through earlier waves to beat the 25-min timer"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Trial of the Champion",
+      "aliases": [
+        "ToC",
+        "TotC",
+        "Trial"
+      ],
+      "type": "dungeon",
+      "levelRange": "Normal 78-80, Heroic 80",
+      "generalTips": [
+        "Two random bosses: Grand Champions (joust) then either Eadric or Paletress, then Black Knight.",
+        "Grab an Argent Lance and mount at the start for the joust phase.",
+        "Loot drops in chests at center, not off corpses."
+      ],
+      "bosses": [
+        {
+          "name": "The Grand Champions (Mounted Joust)",
+          "summary": "Jousting on mounts, then dismounted fight vs 3 champions of random classes.",
+          "positioning": "Mounted: charge to build speed; dismount near group once unhorsed.",
+          "tank": [
+            "Mounted: keep Defend (shield) up at 3 stacks at all times to cut damage.",
+            "Use Shield-Breaker to strip their Defend, then Charge for big hits.",
+            "Dismounted: grab all 3 champions, face them away from group, hold threat on focus kill."
+          ],
+          "healer": [
+            "Mounted: heal yourself, refresh Defend after taking hits.",
+            "Dismounted: dispel poisons/curses/magic from champion classes; watch tank spike.",
+            "Have interrupts ready for caster champions (Mage/Shaman)."
+          ],
+          "dps": [
+            "Mounted: jousting on the trash champions; keep Defend up, Shield-Breaker then Thrust.",
+            "Dismounted: single-target focus one champion at a time; do not spread damage.",
+            "Interrupt and CC the caster champions (Mage Polymorph/Frostbolt, Shaman heals/totems)."
+          ]
+        },
+        {
+          "name": "Eadric the Pure",
+          "summary": "Tank-and-spank with Radiance blind and a returnable Hammer of the Righteous.",
+          "positioning": "Melee can step through/past him during Radiance; everyone face away on the cast.",
+          "tank": [
+            "Pick him up fast: Vengeance makes him crit hard and he can blow up healer/ranged.",
+            "On Radiance raid-warning, turn to face AWAY or you get blinded + ~4s stun."
+          ],
+          "healer": [
+            "Face away during Radiance (do not get stunned mid-heal).",
+            "Dispel Hammer of Justice stun fast so the target can click the thrown hammer back.",
+            "Steady tank healing; Vengeance crits cause spikes."
+          ],
+          "dps": [
+            "Turn away from boss when Radiance is announced.",
+            "The player hit by Hammer of the Righteous: pick it up and throw it back at Eadric for big damage."
+          ]
+        },
+        {
+          "name": "Argent Confessor Paletress",
+          "summary": "Priest boss; at 100% summons a Memory add that must be killed; she heals/shields.",
+          "positioning": "Tank Paletress where Memory can be picked up; melee swap to Memory on spawn.",
+          "tank": [
+            "Hold Paletress, then grab the Memory add when it spawns and face it away.",
+            "Memory casts Old Wounds / fears / Shadow nova - hold it on the group's kill spot."
+          ],
+          "healer": [
+            "Interrupt/dispel her Renew and Holy Smite heals.",
+            "Reflective Shield reflects damage to attackers - heal through self-inflicted damage.",
+            "Heal through the Memory's burst (Old Wounds bleed, fear)."
+          ],
+          "dps": [
+            "When the Memory spawns, swap and burn it down fast, interrupting its casts.",
+            "Do NOT cast into Reflective Shield carelessly - it reflects to you.",
+            "Resume Paletress only after the Memory is dead."
+          ]
+        },
+        {
+          "name": "The Black Knight",
+          "summary": "Three lives: skeleton -> ghoul-summoning corpse -> raging spectre with stacking bleed.",
+          "positioning": "P2: spread slightly so ghoul explosions do not chain; keep boss away from healer.",
+          "tank": [
+            "P1: hold threat; healer dispels his two diseases (Icy Touch + Plague Strike) to weaken Obliterate.",
+            "P3: pop cooldowns - Death's Bite is a stacking bleed and Marked for Death ramps his damage."
+          ],
+          "healer": [
+            "P1: dispel both diseases off the tank to soften Obliterate.",
+            "P2: heal raid through Desecration ground + ghoul explosions.",
+            "P3: big tank healing - Death's Bite stacks + Marked for Death make this the burn race."
+          ],
+          "dps": [
+            "P2: kill the summoned ghouls before they reach and explode on the group (avoid blasts).",
+            "P3: full burst - race down the spectre before Death's Bite / Marked for Death overwhelm the tank.",
+            "Avoid standing in Desecration (purple ground)."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Forge of Souls",
+      "aliases": [
+        "FoS",
+        "Forge"
+      ],
+      "type": "dungeon",
+      "levelRange": "Normal 78-80, Heroic 80",
+      "generalTips": [
+        "First wing of the Frozen Halls; two bosses.",
+        "Bring interrupts - both bosses have key interruptible/avoidable casts."
+      ],
+      "bosses": [
+        {
+          "name": "Bronjahm, the Godfather of Souls",
+          "summary": "Soul-fragment self-heal in P1; at 35% teleports center and casts room-wide Soulstorm.",
+          "positioning": "Keep boss away from healer/ranged in P1; at 35% everyone STACKS on boss (eye of storm).",
+          "tank": [
+            "Hold boss away from the group in P1.",
+            "At 35% he teleports to center - get on top of him so the raid can stack safely in Soulstorm."
+          ],
+          "healer": [
+            "Stay max range in P1 (Shadow Bolt + Magic's Bane mana burn).",
+            "P2 (Soulstorm): stand ON Bronjahm with the group; heal through Fear displacement chip damage."
+          ],
+          "dps": [
+            "Corrupt Soul: targeted player runs away from boss; a Corrupted Soul Fragment spawns and races to him - KILL it before it heals him (Consume Soul).",
+            "Soulstorm (35%): move onto the boss; the center under him is the safe 'eye'.",
+            "Interrupt Magic's Bane if able."
+          ]
+        },
+        {
+          "name": "Devourer of Souls",
+          "summary": "Spam-interrupt Phantom Blast; stop DPS on Mirrored Soul; dodge the rotating Wailing Souls beam.",
+          "positioning": "Stay behind/inside the boss; on Wailing Souls move WITH the beam to stay behind the sweep.",
+          "tank": [
+            "Keep boss faced away from group.",
+            "During Wailing Souls keep the boss roughly put; the beam sweeps 90 deg - stay behind it."
+          ],
+          "healer": [
+            "Interrupt Phantom Blast (it chain-casts and hits hard).",
+            "Mirrored Soul: heal the marked player (they take a share of all boss damage); warn DPS to stop.",
+            "Unleashed Souls adds: heal through them (cannot be killed easily) or they get kited until despawn."
+          ],
+          "dps": [
+            "TOP PRIORITY: interrupt Phantom Blast every cast (rotate interrupts).",
+            "Mirrored Soul: STOP attacking the boss - all your damage reflects and can kill the marked ally.",
+            "Wailing Souls: a beam sweeps 90 deg from a random player - run behind the boss / stay behind the rotation (~10k/s if hit)."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pit of Saron",
+      "aliases": [
+        "PoS",
+        "Pit"
+      ],
+      "type": "dungeon",
+      "levelRange": "Normal 78-80, Heroic 80",
+      "generalTips": [
+        "Second wing of the Frozen Halls; three bosses plus a gauntlet escort before Tyrannus.",
+        "Permafrost and frost damage are the recurring theme - bring dispels/frost cooldowns."
+      ],
+      "bosses": [
+        {
+          "name": "Forgemaster Garfrost",
+          "summary": "Stacking Permafrost frost aura; throws Saronite boulders that create LoS rocks; weapon upgrades ramp damage.",
+          "positioning": "Use the Saronite rock piles to break line-of-sight and drop Permafrost stacks.",
+          "tank": [
+            "Position boss so ranged/healer can hide behind a thrown Saronite rock to reset Permafrost.",
+            "Avoid Chilling Wave frontal cone; watch Thundering Stomp knockback."
+          ],
+          "healer": [
+            "Permafrost stacks raise frost damage taken (up to 30) - dispel it and hide behind rocks to reset.",
+            "Burst-heal after each Forge Frostborn Mace upgrade (frost damage doubles at 66% and 33%).",
+            "Dispel Deep Freeze."
+          ],
+          "dps": [
+            "Break LoS behind a Saronite boulder rock to drop your Permafrost stacks periodically.",
+            "Move out of the front (Chilling Wave) and reposition after Saronite throws."
+          ]
+        },
+        {
+          "name": "Ick and Krick",
+          "summary": "Krick rides Ick; Pursuit chases a random player; avoid poison clouds and Explosive Barrage orbs.",
+          "positioning": "Spread to avoid overlapping Toxic Waste puddles; keep room to kite Pursuit.",
+          "tank": [
+            "Move Ick out of Toxic Waste poison clouds dropped under him.",
+            "Reposition to keep threat during Explosive Barrage."
+          ],
+          "healer": [
+            "Heal the Pursuit target hard - they cannot fight back while kiting.",
+            "Heal through Poison Nova and Explosive Barrage raid damage; dispel poison if able."
+          ],
+          "dps": [
+            "Pursuit: if the arrow targets you, RUN - Ick fixates and chases you; do not lead him into the group.",
+            "Explosive Barrage: keep moving to dodge the exploding orbs.",
+            "Stay out of Toxic Waste green puddles."
+          ]
+        },
+        {
+          "name": "Scourgelord Tyrannus and Rimefang",
+          "summary": "Stop DPS on Overlord's Brand reflect; spread for Mark of Rimefang/Hoarfrost stun; manage Unholy Power.",
+          "positioning": "Spread out so Hoarfrost does not chain-stun; marked player runs away from the group.",
+          "tank": [
+            "Overlord's Brand reflects your damage to the tank AND heals reflected to boss - call DPS off.",
+            "Unholy Power buffs his melee ~75% - use a cooldown; kite through Rimefang's Icy Blast frost patches."
+          ],
+          "healer": [
+            "Big tank healing during Unholy Power windows.",
+            "Mark of Rimefang -> Hoarfrost stuns the marked player + nearby allies; pre-heal and top after.",
+            "Manage raid frost damage from Rimefang strafing."
+          ],
+          "dps": [
+            "STOP attacking the boss while Overlord's Brand is up (damage + healing reflect).",
+            "If Marked by Rimefang, move away from everyone before Hoarfrost lands (it stuns nearby allies too).",
+            "Avoid Rimefang's Icy Blast frost patches on the ground."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Halls of Reflection",
+      "aliases": [
+        "HoR",
+        "HoS",
+        "Halls",
+        "Reflection"
+      ],
+      "type": "dungeon",
+      "levelRange": "Normal 80, Heroic 80",
+      "generalTips": [
+        "Third wing of the Frozen Halls; survive 10 ghost waves (5 before each of Falric/Marwyn) then escape the Lich King.",
+        "Wave adds: interrupt Phantom Mage (Fireball/Frostbolt) and Ghostly Priest (Dark Mending heal); CC Shadowy Mercenary; kill Tortured Rifleman (Cursed Arrow) early.",
+        "CC and interrupt-rotate the wave casters - uninterrupted heals/casts wipe groups."
+      ],
+      "bosses": [
+        {
+          "name": "Falric",
+          "summary": "Periodic Defiling Horror fear with heavy Shadow DoT; dispel Impending Despair; Hopelessness stacks lower output.",
+          "positioning": "Spread a bit to limit fear chaining; tank faces boss/adds away from group.",
+          "tank": [
+            "Keep group topped is on healer, but hold threat through fears.",
+            "Quivering Strike is a tank debuff - have it dispelled when possible.",
+            "Save cooldowns as Hopelessness stacks (cast at 66/33/10%) cut everyone's healing/damage."
+          ],
+          "healer": [
+            "PRE-HEAL to full before Defiling Horror fear - the Shadow DoT kills feared players otherwise.",
+            "Dispel Impending Despair before its 6s timer or the target gets stunned.",
+            "Hopelessness reduces YOUR healing - compensate as it stacks."
+          ],
+          "dps": [
+            "Burn boss between fears; help interrupt/kill leftover wave adds.",
+            "Fear-break trinkets/abilities help during Defiling Horror.",
+            "Race him before Hopelessness stacks make the fight unhealable."
+          ]
+        },
+        {
+          "name": "Marwyn",
+          "summary": "Easier than Falric; avoid Well of Corruption; do NOT dispel Shared Suffering; manage Corrupted Flesh on tank.",
+          "positioning": "Stay out of Well of Corruption ground pools (boost Shadow damage taken).",
+          "tank": [
+            "Corrupted Flesh lowers your max health - stay topped to avoid sudden death.",
+            "Keep boss out of / away from Well of Corruption pools."
+          ],
+          "healer": [
+            "Do NOT dispel Shared Suffering - dispelling dumps the remaining damage onto nearby allies.",
+            "Heal tank through Corrupted Flesh max-HP reduction + Obliterate."
+          ],
+          "dps": [
+            "Stand out of Well of Corruption pools.",
+            "Steady cleave - this is the easy boss; the gauntlet/escape after is the real test."
+          ]
+        },
+        {
+          "name": "The Lich King (Escape from Arthas)",
+          "summary": "Running event: flee the chasing Lich King, break 4 ice walls under a wipe timer while fighting endless undead.",
+          "positioning": "Keep MOVING forward; never enter the 10-yard Remorseless Winter frost aura around the Lich King.",
+          "tank": [
+            "Grab adds at each ice wall and face them away; keep moving with the group/escort.",
+            "Pick up Lumbering Abominations (Cleave + vomit) - face away; stop Raging Ghouls leaping past you."
+          ],
+          "healer": [
+            "Heal on the move; stay ahead of Remorseless Winter (75% slow + ~7-8k frost/s within 10yd).",
+            "Top the group before each wall - DPS must break it before Fury of Frostmourne (1,000,000 dmg) wipes you."
+          ],
+          "dps": [
+            "At each ice wall, BURST the wall down before the Fury of Frostmourne timer.",
+            "Kill Risen Witch Doctors fast (ranged Shadow casters); stun/AoE Lumbering Abominations and Raging Ghouls.",
+            "Never stop moving forward - the Lich King's frost aura kills lingerers."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "expansion": "wotlk",
+  "roles": {
+    "tank": [
+      "Hold aggro on EVERYTHING before DPS opens up; use a focused opener on the kill target, then AoE threat.",
+      "Face bosses AWAY from the group so cleaves/breaths/frontal cones hit only you.",
+      "Pull at a controlled pace - wait for healer mana and don't chain packs the group can't handle.",
+      "Watch for adds that spawn mid-fight; pick them up immediately so they don't reach healers/casters.",
+      "Mark targets (skull = kill first, X = second) and CC sources so the group focuses correctly.",
+      "Keep an active mitigation/defensive ready for big hits; don't blow all cooldowns at once."
+    ],
+    "healer": [
+      "Stay in range/line-of-sight of the whole group; reposition early, not after someone is already low.",
+      "Manage mana: let the tank's self-mitigation and DPS armor soak small hits, save big heals for spikes.",
+      "Pre-heal/HoT before known burst mechanics instead of reacting after the damage lands.",
+      "Triage: keep the tank alive first, then yourself, then DPS; a dead healer wipes the group.",
+      "Dispel/decurse what your class can when it actually matters (lethal debuffs, not cosmetic ones).",
+      "Call for a pull stop when low on mana rather than risking a wipe."
+    ],
+    "dps": [
+      "Never pull off the tank - hold your opener a couple of GCDs and watch the threat meter (Omen).",
+      "Stand BEHIND the boss (melee) or at max range spread (ranged) to avoid cleaves and frontal attacks.",
+      "Always swap to priority adds/spawns when called (skull first), then back to the boss.",
+      "Move out of ground effects (fire/void/poison) immediately - dead DPS is zero DPS.",
+      "Interrupt assigned casts; coordinate kicks so you don't overlap and waste them.",
+      "Use AoE on packs and single-target on bosses; don't AoE before the tank has threat."
+    ]
+  },
+  "dungeonGeneral": [
+    "Let the tank set the pace and the marks; follow the kill order.",
+    "Use crowd control on dangerous casters/healers in big pulls when the group lacks AoE.",
+    "Save Bloodlust/Heroism for the hardest boss or a tight enrage, not on trash.",
+    "Loot need only what your class/spec uses; greed the rest to keep groups happy.",
+    "On heroics, mechanics matter more than gear - know the 1-2 key abilities of each boss before pulling."
+  ],
+  "raidGeneral": [
+    "Know your assignment before the pull: kill order, interrupt rotation, who soaks/kites/dispels.",
+    "Spread or stack exactly as the fight demands; many raid abilities punish the wrong one.",
+    "Don't stand in avoidable damage - 'don't stand in fire' is the #1 cause of avoidable wipes.",
+    "Stagger raid cooldowns across phases instead of stacking them all early.",
+    "Designate target-swap priority for adds so the raid focuses fire instantly."
+  ],
+  "questFlow": [
+    "Group quests in the same zone/sub-zone and turn them in together to cut travel time.",
+    "Pick up every quest from a hub before leaving it; many chains unlock follow-ups at the same NPC.",
+    "Prefer kill+collect quests that share the same mobs/area so one pull progresses several objectives.",
+    "Track the breadcrumb quests that send you to the next zone so you arrive already on the chain.",
+    "Use flight paths and hearthstone resets to minimize backtracking between turn-ins."
+  ],
+  "highXpServer": [
+    "On multiplied-XP realms you out-level zones fast: drop quests that have turned GRAY (trivial) - their XP is negligible.",
+    "Keep quests that are part of a CHAIN leading to a reward, a dungeon attunement, or the next zone's breadcrumb, even if low XP.",
+    "Skip long fetch/escort quests with heavy travel when their XP no longer moves your bar much.",
+    "After a few levels, abandon green quests whose objectives are now far below your level unless they give a useful item/reward.",
+    "Prioritize dense kill quests and dungeon quests: on high rates a single dungeon run can complete several at once.",
+    "When in doubt, compare the quest's level to yours: 5+ levels below you on a 5x realm is usually not worth the travel."
+  ]
+}

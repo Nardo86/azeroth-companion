@@ -1,0 +1,928 @@
+{
+  "expansion": "wotlk",
+  "instances": [
+    {
+      "name": "Naxxramas",
+      "aliases": [
+        "Naxx",
+        "Naxx10",
+        "Naxx25",
+        "NAXX"
+      ],
+      "type": "raid",
+      "levelRange": "80 (Tier 7 entry raid)",
+      "generalTips": [
+        "Greater Frost Protection Potions are mandatory for Sapphiron.",
+        "Four wings (Arachnid, Plague, Construct, Military) unlock in any order; bosses below are the standout per wing.",
+        "Bring decursers/dispellers for Grobbulus (disease) and Sapphiron (Life Drain curse)."
+      ],
+      "bosses": [
+        {
+          "name": "Patchwerk (Construct)",
+          "summary": "Pure tank-and-spank gear/throughput check; Hateful Strike hits highest-HP non-tank melee.",
+          "positioning": "Stack 2-3 tanks together (Y-formation) at his front; only those tanks plus melee in range.",
+          "tank": [
+            "Add tanks soak Hateful Strike by being highest-HP in melee — stack avoidance/HP.",
+            "Hateful Strike fires ~every 1s for ~28-32k; pre-stack heals on add tanks.",
+            "Pop defensives during Frenzy/Berserk (Soft Enrage at low HP) — damage spikes hard."
+          ],
+          "healer": [
+            "Assign 2-3 healers per Hateful-Strike tank; keep a heal landing every GCD.",
+            "Time HoTs/big heals to land as Hateful Strike connects, not after.",
+            "Save cooldowns (Guardian Spirit/PI) for the Frenzy phase."
+          ],
+          "dps": [
+            "Ranged: ignore mechanics, just burn — this is a DPS race vs the enrage.",
+            "Melee: stay in range but never out-HP a designated Hateful tank.",
+            "Use bloodlust/heroism on pull or at enrage per raid plan."
+          ]
+        },
+        {
+          "name": "Grobbulus (Plague)",
+          "summary": "Mutating Injection disease detonates a poison cloud; slow-moving Slime Stream + Poison Clouds carpet the floor.",
+          "positioning": "Tank kites Grobbulus slowly around the room edge so green poison clouds don't cover walkable space.",
+          "tank": [
+            "Kite the boss in a slow circle around the perimeter, staying ahead of the trailing poison.",
+            "Keep him moving — Slime Stream and dropped clouds will block the room if you stand still.",
+            "Off-tank picks up Fallout Slimes spawned from clouds; nuke them before they grow."
+          ],
+          "healer": [
+            "Do NOT dispel Mutating Injection — dispelling instantly detonates the 20yd cloud.",
+            "Heal through the disease damage; injected players run out and the cloud pops on its own.",
+            "Watch melee taking Poison Cloud ticks if the tank kites poorly."
+          ],
+          "dps": [
+            "If you get Mutating Injection, immediately run 20yd from everyone and drop the cloud in dead space.",
+            "Drop clouds in a planned line so the kite path stays clean.",
+            "Kill Fallout Slimes fast; spread out to avoid chaining cloud detonations."
+          ]
+        },
+        {
+          "name": "Heigan the Unclean (Plague)",
+          "summary": "The 'Heigan Dance' — eruptions sweep the floor in safe-zone sequences; phases alternate with a teleport-to-platform spell phase.",
+          "positioning": "Stand on the marked safe-zone sections; move in the eruption sequence (1-2-3-4 then back) to dodge floor spikes.",
+          "tank": [
+            "Tank Heigan in safe zone 1 during the ground phase; face him away.",
+            "Manage Spell Disruption Zone — casting near him backfires, so position for melee.",
+            "On teleport (platform/spell phase) everyone runs up; tank re-grabs when he returns."
+          ],
+          "healer": [
+            "Pre-HoT before the dance; you must move with the eruption rhythm too — don't stand still to cast.",
+            "Decontaminate is unhealable if you eat eruptions; raid damage spikes during the dance.",
+            "Triage during the teleport phase while spread on the platform."
+          ],
+          "dps": [
+            "Learn the eruption timing: stand zone1, then 2, 3, 4, then reverse — eruptions chase you.",
+            "Casters: avoid Spell Disruption Zone (it interrupts/backfires casts near Heigan).",
+            "In the teleport phase, get on the platform fast and AoE/burn from there."
+          ]
+        },
+        {
+          "name": "Loatheb (Plague)",
+          "summary": "Necrotic Aura blocks all healing except brief windows; Spores spawn periodically and grant a Fungal Bloom crit buff when killed.",
+          "positioning": "Stack the raid; let one Spore reach the group so designated players soak Fungal Bloom.",
+          "tank": [
+            "Healing is disabled most of the fight (Necrotic Aura) — survive on HoTs pre-applied and the brief heal windows.",
+            "Stay put; this is a stationary nuke — face him away from raid for Deathbloom/poison.",
+            "Watch for Inevitable Doom ramping in long fights; it's effectively a soft enrage."
+          ],
+          "healer": [
+            "Heals only land during the ~3s window between Necrotic Aura applications — coordinate a healer rotation, one healer per window.",
+            "Pre-cast so the heal lands exactly when Necrotic Aura drops.",
+            "HoTs ticking still help; keep the tank topped going into each blocked phase."
+          ],
+          "dps": [
+            "Kill Spores as they spawn and stand in them for Fungal Bloom (crit buff) to push DPS.",
+            "It's a DPS race vs Inevitable Doom — burn hard, use bloodlust early.",
+            "Spore-soaking is usually assigned to melee near the boss; coordinate so the buff is spread."
+          ]
+        },
+        {
+          "name": "Thaddius (Construct)",
+          "summary": "Feugen & Stalagg constructs first (must die within ~10s of each other), then jump to Thaddius for Polarity Shift charge mechanic.",
+          "positioning": "Split raid for the two constructs; after the jump, stack by charge — positives on one side, negatives on the other.",
+          "tank": [
+            "Constructs: keep Feugen/Stalagg ON their platforms or they wipe the raid (Static Field nature dmg).",
+            "Constructs swap via Magnetic Pull — tanks taunt back or trade after each pull.",
+            "On Thaddius, tank him center; watch Chain Lightning and the polarity stacks like everyone else."
+          ],
+          "healer": [
+            "Constructs: heal through Static Field (60yd nature pulse) and Stalagg's Power Surge attack-speed spikes.",
+            "After the jump, stack with your matching charge; a wrong-charge neighbor = instant death.",
+            "Polarity Shift reassigns charges every ~30s — re-check your debuff and move every shift."
+          ],
+          "dps": [
+            "Constructs must die within 10s of each other or the survivor revives the other.",
+            "Make the jump cleanly (Slow Fall/Levitate helps); falling = death.",
+            "On Thaddius: stack same-charge to gain the damage buff; re-sort instantly on every Polarity Shift."
+          ]
+        },
+        {
+          "name": "Sapphiron",
+          "summary": "Frost-aura DPS race in P1 with Life Drain curse + Blizzard, then airborne Frost Breath you must LOS behind Ice Blocks.",
+          "positioning": "Stack the raid on one flank of his body (melee on hind leg); avoid head and tail. Stay grouped for healing.",
+          "tank": [
+            "Point Sapphiron toward the Kel'Thuzad door, away from raid; keep him still.",
+            "Constant Frost Aura (~600 dmg/2s) ticks the whole raid — pre-stack frost resistance/potions.",
+            "Avoid the tail-swipe arc; reposition only if Blizzard forces it."
+          ],
+          "healer": [
+            "Decurse Life Drain immediately — it heals Sapphiron and drains the target each tick.",
+            "Heal through the raid-wide Frost Aura; stacked raid = easier AoE/HoT coverage.",
+            "P2: get behind an Ice Block too — you can't out-heal a missed Frost Breath."
+          ],
+          "dps": [
+            "Move out of Blizzard (Chill) trails on the ground.",
+            "P2 (he flies): when he freezes 5 players, hide behind a frozen player's Ice Block to LOS Frost Breath or you die.",
+            "Burn in P1; frost resist potions raise survivability for the DPS race."
+          ]
+        },
+        {
+          "name": "Kel'Thuzad",
+          "summary": "Wave-based add phase, then KT awakens: Frost Blast encasement, Shadow Fissure void zones, Mana Detonation, and a guardian add phase.",
+          "positioning": "P1 stack center away from add spawn alcoves; P2 spread ~10yd on assigned points around his robe.",
+          "tank": [
+            "P1: pick up the Abominations; let ranged kill Soldiers/Banshees first.",
+            "P2: tank KT center; off-tank grabs Guardians of Icecrown when they spawn (~40%).",
+            "Watch Frost Blast — anyone (incl. tank) can be encased; raid must free them fast."
+          ],
+          "healer": [
+            "Free Frost Blast targets ASAP (DPS the ice block) — they take escalating damage encased.",
+            "Spread 10yd so Shadow Fissure / Mana Detonation don't chain the group.",
+            "Heal through Frostbolt/Frostbolt Volley; conserve mana — Mana Detonation drains and explodes on mana users."
+          ],
+          "dps": [
+            "P1: kill Soldiers and Banshees from range, never standing in their melee/charm range; Abom last.",
+            "Run out of the swirling Shadow Fissure void zones instantly (they one-shot).",
+            "Spread to limit Mana Detonation; help break Frost Blast ice blocks immediately."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Obsidian Sanctum",
+      "aliases": [
+        "OS",
+        "Obsidian Sanctum",
+        "Sarth",
+        "OS+3",
+        "OS3D"
+      ],
+      "type": "raid",
+      "levelRange": "80 (Tier 7)",
+      "generalTips": [
+        "Difficulty scales with how many drakes you leave alive at the Sartharion pull (OS+1/+2/+3).",
+        "More drakes alive = Sartharion enrages at higher HP and the room gets far deadlier.",
+        "Kill order is typically Tenebron, then Vesperon, then Shadron, then Sartharion."
+      ],
+      "bosses": [
+        {
+          "name": "Sartharion + Drakes (Tenebron, Shadron, Vesperon)",
+          "summary": "Tank Sartharion while drakes descend on a timer; Flame Tsunami (lava wave) sweeps the room, drakes add fire debuffs, whelps, and Twilight Portals.",
+          "positioning": "Tank Sartharion on one side near the lava-wave path so the raid only side-steps the Flame Tsunami; stack raid to dodge waves together.",
+          "tank": [
+            "Main tank holds Sartharion; off-tank immediately grabs each drake and faces it AWAY from raid (Tail Lash/Breath).",
+            "Position so the Flame Tsunami only requires a small step to dodge; never get caught mid-room.",
+            "At ~10% Sartharion spawns a big Lava Blaze wave — off-tank picks those up, don't let them hit raid.",
+            "If any drake is alive at 35%, Sartharion gains a hard Berserk — manage drake timers."
+          ],
+          "healer": [
+            "Shadron's Gift of Twilight doubles raid fire damage taken — heal hard while it's up and during Flame Tsunami.",
+            "Vesperon's Twilight Portal sends players to the shadow realm vs an Acolyte (Disrupting Shadows) — keep portal team alive.",
+            "Pre-heal before each Flame Breath / lava wave; raid-wide fire damage is constant with drakes up."
+          ],
+          "dps": [
+            "Dodge Flame Tsunami (the rolling lava wall) every time — it splits the room; cross at the gap.",
+            "Tenebron spawns Twilight Whelps — AoE them down fast or they overwhelm healers.",
+            "Kill Acolytes inside Vesperon's/Shadron's Twilight Portal to drop Sartharion's damage shield/buffs.",
+            "Priority: drakes down before Sartharion hits 35% to avoid his Berserk."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Eye of Eternity",
+      "aliases": [
+        "EoE",
+        "Eye",
+        "Malygos",
+        "Maly"
+      ],
+      "type": "raid",
+      "levelRange": "80 (Tier 7)",
+      "generalTips": [
+        "Single-boss raid (Malygos) fought across 3 phases on platform, hover disks, then red drakes.",
+        "Phase 3 disables your normal abilities — everyone uses the drake's vehicle bar (Flame Spike, Engulf, heal HoT, Flame Shield).",
+        "Spread out in P1; never bunch up for the Arcane Breath cone."
+      ],
+      "bosses": [
+        {
+          "name": "Malygos",
+          "summary": "P1 ground fight (Arcane Breath cone, Vortex air-toss, Power Sparks), P2 on hover disks vs Nexus Lords/Scions, P3 on red drakes using a vehicle rotation.",
+          "positioning": "P1: spread around the platform out of the frontal Arcane Breath; drag Power Sparks into the raid. P2: ride disks, dodge Static Field. P3: free-fly on drakes, dodge Surge of Power.",
+          "tank": [
+            "P1: face Malygos away from raid so Arcane Breath cone hits no one; keep him still.",
+            "During Vortex everyone is sucked airborne and takes ticking damage — just survive it, then re-grab.",
+            "Run Power Sparks into the melee/raid so the group gets the damage/haste buff before they expire.",
+            "P2/P3 have no traditional tanking — switch to add-killing (disks) and the drake rotation."
+          ],
+          "healer": [
+            "P1: heal through Vortex (raid-wide) and Arcane Breath; spread to avoid splash.",
+            "P2: heal disk riders through Static Field and add damage; melt the Scions of Eternity casting Arcane Barrage.",
+            "P3: no normal heals — use the drake's HoT (heals 500/s, builds combo points) on damaged drakes; everyone self-sustains."
+          ],
+          "dps": [
+            "P1: stand in Power Spark pulse to gain the buff; nuke through Vortex damage.",
+            "P2: kill Nexus Lords (melee them off their disks) and Scions; collect Power Sparks; watch for Deep Breath if too few sparks consumed.",
+            "P3 drake rotation: Flame Spike x2-3 to build combo points, then Engulf in Flames to apply/stack the DoT; repeat.",
+            "P3: use Flame Shield the instant you're targeted by Surge of Power or you die; pick up Revivify orbs/spark buff."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ulduar",
+      "aliases": [
+        "Uld",
+        "Ulduar 10/25"
+      ],
+      "type": "raid",
+      "levelRange": "80",
+      "generalTips": [
+        "Vehicle bosses (Flame Leviathan) use raid-provided Demolishers/Siege/Choppers, not your character.",
+        "Most hard modes are opt-in via in-fight choices (towers up, kill heart, kill Animus, watchers alive).",
+        "Interrupts win fights here: Searing Flames (Vezax), construct casters, add casters.",
+        "Movement raid: position near safe spots (snowdrifts, mushrooms, away from beams/bombs)."
+      ],
+      "bosses": [
+        {
+          "name": "Flame Leviathan",
+          "summary": "Vehicle fight; gunners shoot down pyrite, siege engines interrupt Flame Vents, choppers slow/kite.",
+          "positioning": "Stay in your assigned vehicle; circle the boss, kite at range, never let it free-roam.",
+          "tank": [
+            "Siege Engine driver = de facto tank/kiter; Electroshock to interrupt Flame Vents.",
+            "Pop ram/shield to soak; keep boss moving so it can't fixate.",
+            "Hard mode = leave towers up (more damage, harder)."
+          ],
+          "healer": [
+            "No traditional healing; you're in a vehicle. Pyrite-boost damage instead.",
+            "Repair/heal vehicles where possible; revive ejected players post-fight."
+          ],
+          "dps": [
+            "Gunner: shoot pyrite crates, ignite tar, gather pyrite for driver.",
+            "Demolisher driver: launch passengers onto boss to plant charges / destroy turrets.",
+            "Killing turrets triggers Systems Shutdown: stun + 50% more damage for 20s, BURN."
+          ]
+        },
+        {
+          "name": "Razorscale",
+          "summary": "Alternating air/ground phases; harpoon her down, kill adds, ground-only under 50%.",
+          "positioning": "Spread for Devouring Flame patches; stack at harpoons to pull her down fast.",
+          "tank": [
+            "Pick up Dark Iron adds from mole machines instantly; Sentinels die first (Whirlwind).",
+            "Ground phase: tank front; watch Fuse Armor + Flame Buffet stacks for burst.",
+            "Under 50% she's permanently grounded; use a CD when stacks climb."
+          ],
+          "healer": [
+            "Spot-heal Devouring Flame targets; big tank healing in permanent ground phase.",
+            "Top off harpoon operators; raid stays out of fire patches to ease healing."
+          ],
+          "dps": [
+            "Air phase: kill Sentinels (Whirlwind) > Watchers; man harpoons to ground her.",
+            "Burn hard during the 30-40s grounded window before she relaunches.",
+            "Don't stand in Devouring Flame; spread to limit fireball/flame spread."
+          ]
+        },
+        {
+          "name": "Ignis the Furnace Master",
+          "summary": "Tank constructs through scorch to make them Molten, then to water to make them Brittle and shatter.",
+          "positioning": "Boss out of raid; constructs cycled construct-tank -> scorch -> water by ranged.",
+          "tank": [
+            "Main tank: face Ignis AWAY from raid (Flame Jets frontal cone).",
+            "Construct tank: drag adds into Scorch ground until Molten (10 Heat), then to water.",
+            "Brittle constructs are stunned 20s and shatter from physical/spell hits."
+          ],
+          "healer": [
+            "Slag Pot target takes heavy DoT 10s; pre-HoT and burst-heal them out.",
+            "Flame Jets = raid-wide fire; top group between casts.",
+            "Watch construct tank standing in scorch (self-damage)."
+          ],
+          "dps": [
+            "Instant-cast during Flame Jets (cast bar locked).",
+            "Shatter Brittle constructs immediately (they're stunned, take bonus dmg).",
+            "Ranged stay near water to shatter; don't stand in Scorch."
+          ]
+        },
+        {
+          "name": "XT-002 Deconstructor",
+          "summary": "Heart exposes every 25%; nuke heart for damage, manage adds and Tympanic Tantrum.",
+          "positioning": "Spread for Searing Light/Gravity Bomb; keep bombbots away from raid.",
+          "tank": [
+            "Grab XM-024 Pummellers when heart is exposed (they spawn during heart phase).",
+            "Position boss so Tantrum/heart phases are predictable; minimal movement.",
+            "Hard mode = kill the Heart while exposed (turns fight harder)."
+          ],
+          "healer": [
+            "Tympanic Tantrum = ~heavy raid AoE over 8s; topple-heal between ticks.",
+            "Searing Light = heavy DoT on target; keep them up.",
+            "High DPS can skip Tantrum by exposing heart before its 1-min timer."
+          ],
+          "dps": [
+            "Nuke Heart (takes 100% extra dmg) during 30s exposed window.",
+            "Ranged: kill XE-321 Boombots fast and at range (they explode, can kill healers).",
+            "Move out of Gravity Bomb; don't cluster near bombbots."
+          ]
+        },
+        {
+          "name": "Kologarn",
+          "summary": "Kill arms to stop Grip/Sweep; tank-swap Crunch Armor; dodge Focused Eyebeams.",
+          "positioning": "Ranged spread; eyebeam targets run toward entrance to keep beams clear of raid.",
+          "tank": [
+            "Tank-swap on Crunch Armor (-25% armor, stacks to 100%); use avoidance CDs at 1 stack.",
+            "Avoidance > stamina: dodged Overhead Smash skips a Crunch Armor application.",
+            "Right arm focus reduces Stone Grips; left arm regrows."
+          ],
+          "healer": [
+            "Heal Stone Grip victims (grabbed players take damage until arm dies).",
+            "Tank spikes when Crunch Armor stacks; pre-empt the swap.",
+            "Eyebeam targets take heavy moving AoE; chase-heal them."
+          ],
+          "dps": [
+            "Focus RIGHT arm (fewer Stone Grips); free gripped allies by killing the arm.",
+            "Run Focused Eyebeam toward the entrance, away from raid.",
+            "Don't fall off the platform on knockbacks; mind the rubble edges."
+          ]
+        },
+        {
+          "name": "Thorim",
+          "summary": "Split raid: gauntlet team rushes to Sif, arena team survives waves; phase 2 burn with tank-swaps.",
+          "positioning": "Arena team near center, spread (Chain Lightning); avoid Sif's Blizzard rim and Frost Nova.",
+          "tank": [
+            "Phase 2: tank-swap on Unbalancing Strike (+50% damage taken debuff).",
+            "Manage Lightning Charge stacks (boss ramps); face boss away if needed.",
+            "Gauntlet tank: pick up adds fast to reach Sif before timer (hard mode)."
+          ],
+          "healer": [
+            "Arena: heavy raid AoE from waves + Chain Lightning; spread to limit bounces.",
+            "Gauntlet: keep DPS up through tunnel adds; speed matters for hard mode.",
+            "Phase 2 tank spikes on Unbalancing Strike; pre-shield the swap."
+          ],
+          "dps": [
+            "Don't stack in phase 2: Chain Lightning bounces and chains kills.",
+            "Kill arena adds (Acolytes/Champions) by priority; reach boss together.",
+            "Move out of Sif's Frost Nova and Blizzard; burn boss fast (DPS race vs Sif buffs)."
+          ]
+        },
+        {
+          "name": "Freya",
+          "summary": "Survive 3 add-wave types (lashers, conservator, elementals) to drop Attuned-to-Nature, then burn Freya.",
+          "positioning": "Stack loosely for AoE on lashers; stand under Healthy Mushrooms during Conservator's Grip.",
+          "tank": [
+            "Tank Ancient Conservator and the elemental trio (Snaplasher ramps with hits).",
+            "Snaplasher: spread melee to slow its hardening stacks.",
+            "Hold Freya away from raid; watch Iron Roots locking players in place."
+          ],
+          "healer": [
+            "Lasher explosions = AoE on death; spread heals across raid.",
+            "Stand under Healthy Mushrooms to cleanse Conservator's Grip (silence/pacify).",
+            "Sunbeam = pulsing nature AoE; heal/move targets out."
+          ],
+          "dps": [
+            "Detonating Lashers: untankable, AoE them (each death removes Attuned stacks).",
+            "Kill Conservator (-30 stacks) and elementals to drop the buff; then Freya.",
+            "Move out of Nature Bombs and Sunbeam; free rooted allies via Iron Roots."
+          ]
+        },
+        {
+          "name": "Hodir",
+          "summary": "Beat the enrage by freeing NPCs and stacking damage; never stand still (Flash Freeze, Icicles).",
+          "positioning": "Constant movement; stand in/near Snowdrifts (anti-freeze buff) but not under landing shards.",
+          "tank": [
+            "Tank-swap on Frozen Blows (melee turns to heavy Frost); use defensives.",
+            "Frost Resistance helps; drag boss onto frozen helper NPCs to free them.",
+            "Keep moving to avoid Icicle drops."
+          ],
+          "healer": [
+            "Frozen Blows = raid Frost every 2s for 20s; ramp raid healing, save CDs.",
+            "Dispel Freeze roots immediately (movement is survival).",
+            "Use Toasty Fire / NPC buffs; keep helpers alive."
+          ],
+          "dps": [
+            "Stay in Snowdrift buff to avoid Flash Freeze encasement.",
+            "Free frozen players/NPCs; use Storm/Starlight buff zones for haste/crit.",
+            "Dodge falling Icicles and incoming Flash Freeze shards; it's a soft enrage race."
+          ]
+        },
+        {
+          "name": "Mimiron",
+          "summary": "4 phases (Leviathan MKII, VX-001, Aerial, combined); avoid mines/rockets/lasers each phase.",
+          "positioning": "P1 spread for mines; P2 hug close to dodge laser barrage rotation; P4 manage all at once.",
+          "tank": [
+            "P1: tank-swap on Plasma Blast (heavy stacking Spellfire); face MKII away.",
+            "P2 VX-001: no melee tank needed; P4 re-tank the assembled unit.",
+            "Reposition constantly to dodge Shock Blast (50k nature in 15yd)."
+          ],
+          "healer": [
+            "P1 Proximity Mines + P4 stacked damage are spiky; heavy raid healing.",
+            "Plasma Blast tank target needs burst healing (25k/s).",
+            "Rocket Strike + Napalm/Frost Bomb DoTs hit movers; top them fast."
+          ],
+          "dps": [
+            "P1: spread, don't trigger Proximity Mines; kill Bomb Bots.",
+            "P2: rotate around VX-001 to avoid P3Wx2 Laser Barrage; dodge Rocket Strikes.",
+            "P3: kill Aerial Command Unit + Assault/Bomb Bots; P4 = all mechanics combined, prioritize survival."
+          ]
+        },
+        {
+          "name": "General Vezax",
+          "summary": "Near-zero mana regen (Aura of Despair); use Saronite Vapor puddles, interrupt Searing Flames, spread for Shadow Crash.",
+          "positioning": "Spread out for Shadow Crash; Mark of the Faceless target runs away from everyone.",
+          "tank": [
+            "Boss reduces melee attack speed via aura; steady threat.",
+            "Hard mode: do NOT kill Saronite Animus (kill it = normal); leave it for hard.",
+            "Position boss centrally so raid can reach vapor puddles."
+          ],
+          "healer": [
+            "Mana is scarce: stand in Saronite Vapor puddles to regen (but they damage you).",
+            "Searing Flames MUST be interrupted every cast (huge raid damage if not).",
+            "Mark of the Faceless drains/heals boss from nearby allies; spread to negate."
+          ],
+          "dps": [
+            "Interrupt Searing Flames on rotation, every time.",
+            "Move out of Shadow Crash impact; spread so it doesn't hit clusters.",
+            "Mark of the Faceless: isolate yourself (it leeches health from nearby players)."
+          ]
+        },
+        {
+          "name": "Yogg-Saron",
+          "summary": "3 phases: clear Sara's tentacles -> brain room portals (kill Influence Tentacles) -> burn body; manage Sanity throughout.",
+          "positioning": "P1 spread from Malady fear targets; P2 stand by exit portal in brain room before nuking brain.",
+          "tank": [
+            "P1: tank Crusher Tentacles; P3: tank Yogg body + Immortal Guardians.",
+            "Phase transitions reset positioning; keep adds off raid.",
+            "Manage Sanity like everyone (don't look at clouds/portals carelessly)."
+          ],
+          "healer": [
+            "Sanity management: avoid mechanics that drain it (0 = mind controlled).",
+            "Squeeze (Constrictor Tentacle) = severe DoT; heal hard until tentacle dies.",
+            "P3 Lunatic Gaze + Shadow Beacon adds = heavy raid damage; ramp healing."
+          ],
+          "dps": [
+            "P1: kill Crusher/Corruptor/Constrictor tentacles (Constrictor first - Squeeze).",
+            "P2: clear Immune/Influence Tentacles to open brain room; nuke Brain to 30% then escape portal.",
+            "P3: DPS race - kill Brain-spawned adds, watch Sanity, burn Yogg before enrage."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Trial of the Crusader",
+      "aliases": [
+        "ToC",
+        "ToGC",
+        "TotC",
+        "Coliseum"
+      ],
+      "type": "raid",
+      "levelRange": "80",
+      "generalTips": [
+        "Linear, no trash; 5 encounters back to back in one arena.",
+        "Heroic (ToGC) adds attackable portals/spawners and limited raid-wide wipes (50 in 25H).",
+        "Interrupts and PvP-style CC matter most on Faction Champions.",
+        "Several fights are timer/positioning races, not gear checks."
+      ],
+      "bosses": [
+        {
+          "name": "Northrend Beasts",
+          "summary": "3-stage gauntlet: Gormok (snobolds/impale) -> Acidmaw+Dreadscale (poison/fire kiting) -> Icehowl (Massive Crash charge).",
+          "positioning": "Spread for Gormok; assign poison/fire kite paths in jormungar phase; spread out for Icehowl charge.",
+          "tank": [
+            "Gormok: tank faces raid? No - just hold; off-tank can take Impale stacks via swap.",
+            "Jormungars: ONE tank on mobile worm, ONE on stationary; swap when Acidmaw/Dreadscale surface roles flip.",
+            "Icehowl: re-grab after Massive Crash + Arctic Breath stun; tank front, raid behind."
+          ],
+          "healer": [
+            "Gormok: Snobold-riding players take damage; Impale bleed stacks need attention.",
+            "Jormungar: Burning Bile + Paralytic Poison combo - cleanse/swap debuffs (burning bile cures paralysis).",
+            "Icehowl: huge raid damage if Massive Crash lands on someone; spread to avoid wipe."
+          ],
+          "dps": [
+            "Gormok: kill Snobold Vassals off players' heads ASAP (4 spawn).",
+            "Jormungar: burn both; players with poison stand apart, burning-bile players cleanse poisoned allies.",
+            "Icehowl: STOP and move away from Massive Crash target ring; nuke after his post-charge stun (he hits wall)."
+          ]
+        },
+        {
+          "name": "Lord Jaraxxus",
+          "summary": "Interrupt Fel Fireball, run Legion Flame out, kill Mistress of Pain + Infernals, manage Incinerate Flesh.",
+          "positioning": "Keep raid loosely spread (Fel Lightning chains); move out of Legion Flame and Infernal volcanoes.",
+          "tank": [
+            "Main tank Jaraxxus (warrior/DK preferred for Fel Fireball interrupts).",
+            "Off-tank grabs Mistress of Pain (from Nether Portal) immediately.",
+            "Spellsteal/Purge Nether Power (10 stacks, +magic dmg) off the boss."
+          ],
+          "healer": [
+            "Incinerate Flesh = healing absorb shield on a player; burst through it before it becomes Burning Inferno raid damage.",
+            "Fel Lightning bounces; keep targets spread-healed.",
+            "Heavy magic damage when Nether Power stacks are up; pre-CD."
+          ],
+          "dps": [
+            "Interrupt Fel Fireball every cast.",
+            "Run out of raid with Legion Flame; kill Infernal Volcanoes/Nether Portals (heroic) fast.",
+            "Burn Mistress of Pain quickly (Spinning Pain Spike) and Spellsteal/Purge Nether Power."
+          ]
+        },
+        {
+          "name": "Faction Champions",
+          "summary": "PvP-style fight vs enemy player comp; CC and focus-kill healers, force trinkets, peel for your healers.",
+          "positioning": "Group with LoS for CC; spread casters; peel melee off your healers; use pillars/walls.",
+          "tank": [
+            "No traditional tanking; act as peeler/CC and body-block melee off your healers.",
+            "Use stuns/snares (Shockwave, Hungering Cold) to lock down the kill target.",
+            "Pick up and control loose champions chasing your backline."
+          ],
+          "healer": [
+            "You are the primary target - kite, LoS, bubble/trinket out of stuns and silences.",
+            "Dispel deadly debuffs (Polymorph, fears, magic burst); trinket the big CC chains.",
+            "Stay near peelers; expect to be tunneled the whole fight."
+          ],
+          "dps": [
+            "Focus enemy healers first (Druid/Shaman highest priority), then casters.",
+            "Chain CC off-targets; AoE CC (Psychic Scream, Hungering Cold) to bait PvP trinkets.",
+            "Interrupt enemy heals/casts; blow cooldowns to burst the kill target through their defensives."
+          ]
+        },
+        {
+          "name": "Twin Val'kyr",
+          "summary": "Match your essence to absorb same-color attacks; swap essence for Vortex; break shields to interrupt Twin's Pact heal.",
+          "positioning": "Half raid light essence on dark twin, half dark on light twin; grab same-color orbs for damage buff.",
+          "tank": [
+            "Tank each Val'kyr; tanks take essence matching their twin to mitigate her melee/attacks.",
+            "Hold both twins apart for raid clarity; minimal swaps.",
+            "Stay on top of threat through the essence-swap chaos."
+          ],
+          "healer": [
+            "Swap your essence to MATCH the Vortex caster's color or take heavy raid damage.",
+            "Heal through Twin's Pact channel window; lots of essence-mismatch damage punishes mistakes.",
+            "Touch same-color orbs to boost output; opposite-color orbs hurt you."
+          ],
+          "dps": [
+            "DPS the twin OPPOSITE your essence color (light essence -> hit dark twin).",
+            "On Vortex: change essence to match the casting twin immediately, then resume.",
+            "Break the shield to interrupt Twin's Pact (heals 20% normal / 50% heroic); grab same-color orbs (Surge of Speed)."
+          ]
+        },
+        {
+          "name": "Anub'arak",
+          "summary": "3 phases: surface (burrowers, Penetrating Cold) -> submerge (Pursuing Spikes, use Permafrost) -> P3 burn with Leeching Swarm.",
+          "positioning": "Kill Frost Spheres to make Permafrost patches; in submerge phase kite spikes onto Permafrost to slow them.",
+          "tank": [
+            "P1/P3: tank Anub'arak + Nerubian Burrowers (off-tank on adds).",
+            "Freezing Slash freezes the tank 3s; off-tank ready.",
+            "Keep boss positioned near Permafrost for fast re-engage after submerge."
+          ],
+          "healer": [
+            "Penetrating Cold = stacking frost DoT on 5 random players; rolling raid heal.",
+            "P3 Leeching Swarm drains health to heal boss - keep everyone high so it self-sustains less.",
+            "Pursuing Spikes hits = damage + knockup; heal movers in submerge phase."
+          ],
+          "dps": [
+            "Submerge: kite Pursuing Spikes onto Permafrost (resets their speed); kill Swarm Scarabs fast (lethal stacking bleed).",
+            "Kill Frost Spheres before submerge to seed Permafrost patches.",
+            "P3 (<30%): DPS race vs Leeching Swarm; burn boss while staying topped."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Icecrown Citadel",
+      "aliases": [
+        "ICC",
+        "Icecrown"
+      ],
+      "type": "raid",
+      "levelRange": "80 (10/25, normal & heroic)",
+      "generalTips": [
+        "Buffs (Strength of Wrynn / Hellscream's Warsong) add stacking 5-30% HP/healing/damage — set the % via instance NPC before pulling.",
+        "Frost Resistance gear helps on Sindragosa and Lich King; not needed elsewhere.",
+        "Most fights want ranged spread and melee stacked — default to that unless a mechanic says otherwise."
+      ],
+      "bosses": [
+        {
+          "name": "Lord Marrowgar",
+          "summary": "Stacked-tank cleave fight with impale spikes and a whirlwind phase.",
+          "positioning": "Tanks + melee stacked under boss in center; ranged/healers spread in a loose arc behind.",
+          "tank": [
+            "Both tanks stack on top of each other to split Saber Lash (Bone Slice) 3-way.",
+            "Never let a tank stand alone — unsplit Saber Lash one-shots.",
+            "Regroup with co-tank fast after each Bone Storm."
+          ],
+          "healer": [
+            "Spread for Coldflame trails but stay in raid range.",
+            "Spot-heal anyone Bone-Spiked; pre-HoT during Bone Storm.",
+            "Bone Storm = heavy raid AoE; have a CD ready."
+          ],
+          "dps": [
+            "Melee hug the boss to dodge Coldflame fire lines.",
+            "Instantly swap to kill Bone Spikes (impaled players) — melee near, ranged far.",
+            "During Bone Storm run away from boss; spread from Coldflame; resume on impaled targets."
+          ]
+        },
+        {
+          "name": "Lady Deathwhisper",
+          "summary": "Break her Mana Barrier (P1) by killing adds, then burn boss (P2).",
+          "positioning": "Tanks hold boss + adds at front; ranged spread along the back rail; melee on boss/adds.",
+          "tank": [
+            "Pick up Fanatics/Adherents as they spawn from side balconies; keep them off healers.",
+            "P2: tank boss; watch for Reanimated Adherent — taunt and burn.",
+            "Face boss away (Death and Decay / Frostbolt frontal)."
+          ],
+          "healer": [
+            "P1 is heavy on add-tank + raid damage from Death and Decay; spread.",
+            "Dispel Curse of Torpor (Adherent) and the disease.",
+            "Save mana — P2 has a soft enrage."
+          ],
+          "dps": [
+            "P1: kill adds, do NOT damage the boss (her shield converts mana). Kill Adherents that cast, control Fanatics.",
+            "Casters dispel/Spellsteal the Fanatic damage/heal-absorb buff if possible.",
+            "P2: full burn boss; ranged dodge Frostbolt Volley spread, run from Death and Decay, kill Ghost adds (Vengeful Shade)."
+          ]
+        },
+        {
+          "name": "Gunship Battle",
+          "summary": "Ship-to-ship: man cannons, jump across, kill enemy boss/adds. No traditional tank/heal check.",
+          "positioning": "Stay near your ship's rail for healer range; cannon operators on cannons; jumpers use rocket pack to cross.",
+          "tank": [
+            "Tank jumps first — enemy commander activates the instant anyone lands.",
+            "Drag enemy boss to the ship edge to keep healers in range.",
+            "Use CDs vs Wounding Strike; sidestep Bladestorm."
+          ],
+          "healer": [
+            "Stand near the ledge to reach both ships.",
+            "Watch jumpers' health (fall + boss damage) and cannon operators.",
+            "Light healing fight overall."
+          ],
+          "dps": [
+            "Cannon operators: Cannon Blast to ~90 heat, then Incinerating/Overheat to vent — never hit 100 heat.",
+            "Ranged kill the Mage adds casting Below Zero (they freeze your cannons).",
+            "Melee jump and burn enemy boss + adds; dodge Bladestorm."
+          ]
+        },
+        {
+          "name": "Deathbringer Saurfang",
+          "summary": "Tank-swap on Rune of Blood and starve his Blood Power to avoid extra Marks.",
+          "positioning": "Tanks stack boss at center; ranged spread wide; melee on boss but ready to single-target Blood Beasts.",
+          "tank": [
+            "Instant taunt-swap on Rune of Blood or he self-heals — keep taunts ready.",
+            "Keep the boss centered so ranged can spread.",
+            "Save big CDs for last 30% (Frenzy)."
+          ],
+          "healer": [
+            "Beacon/external the Mark of the Fallen Champion target(s) — Marks are permanent and stack.",
+            "Watch Boiling Blood ticks, deadly on Marked players.",
+            "Less damage early = fewer Marks; the longer the fight runs the harder it gets."
+          ],
+          "dps": [
+            "Minimize Blood Power: ranged spread so Blood Nova only hits one person.",
+            "Blood Beasts have Resistant Skin — NO AoE; use single-target + slows/stuns/knockbacks.",
+            "Ranged stand near melee so Beasts don't run far before dying; kill them fast (they fuel Blood Power)."
+          ]
+        },
+        {
+          "name": "Festergut",
+          "summary": "5-minute DPS race; everyone must inhale Gas Spores to survive Pungent Blight.",
+          "positioning": "Melee + tank stacked; ranged spread on perimeter for Vile Gas. Group up to share spores when they spawn.",
+          "tank": [
+            "Gastric Bloat stacks on tank — swap before ~9-10 stacks or Gastric Explosion kills you.",
+            "Be IN range of a Gas Spore each time — you must get the Inhaled Blight buff.",
+            "Pop a CD each Pungent Blight (raid-wide every ~2 min)."
+          ],
+          "healer": [
+            "Heavy spike damage at high Inhale Blight; raid CD on each Pungent Blight.",
+            "Spread so Vile Gas only hits one ranged.",
+            "Confirm everyone has Inoculated stacks before Pungent Blight or it kills the raid."
+          ],
+          "dps": [
+            "Group up so the 3 Gas Spore holders share the buff with everyone nearby.",
+            "Ranged spread for Vile Gas, then regroup for spore inhale.",
+            "Pure burn — 5-min hard enrage; pop CDs on pull and during heroism."
+          ]
+        },
+        {
+          "name": "Rotface",
+          "summary": "Dispel infections away from raid; one tank kites a growing Big Ooze and detonates it.",
+          "positioning": "Boss tanked off-center; melee stacked on boss; ranged spread on edges; ooze-kiter runs Big Ooze around the room.",
+          "tank": [
+            "Boss tank: hold Rotface, face Slime Spray cone away from raid.",
+            "Ooze-kiter: grab Big Ooze from 10+ yds, kite it and merge Little Oozes into it, then position for Unstable Ooze Explosion.",
+            "Use speed boosts (Nitro) to kite."
+          ],
+          "healer": [
+            "Set and follow a dispel order for Mutated Infection — only dispel once the infected player is in the safe drop spot.",
+            "Spread for Vile Gas; raid CD on Unstable Ooze Explosion.",
+            "Dispelling spawns a Little Ooze + Sticky Ooze slow at that location."
+          ],
+          "dps": [
+            "Infected players run to the kite path before being dispelled.",
+            "Stack to share Unstable Ooze Explosion damage when Big Ooze blows.",
+            "Melee dodge Slime Spray; burn boss; avoid Sticky Ooze puddles."
+          ]
+        },
+        {
+          "name": "Professor Putricide",
+          "summary": "3 phases: kite/kill oozes, then add Malleable Goo, then a tank-swap DPS race.",
+          "positioning": "Boss tanked along a wall to keep center clear of Slime Puddles; ranged spread; one player drives the Abomination to eat puddles and slow oozes.",
+          "tank": [
+            "P1-2: keep boss near wall, move out of Choking Gas Bombs / puddles.",
+            "P3 (35%): frequent tank swaps for Mutated Plague — never take 3 stacks; swap every ~2 stacks.",
+            "Coordinate CDs between swaps."
+          ],
+          "healer": [
+            "Spread; track Slime Puddle growth and ooze explosions.",
+            "P3: prioritize the current Mutated Plague tank (damage multiplies per stack).",
+            "Dispel Unbound Plague carefully (only pass between the two melee designated)."
+          ],
+          "dps": [
+            "Instantly swap to Gas Cloud (chase) / Volatile Ooze (stack to soak) when Unstable Experiment spawns them.",
+            "Move out of Malleable Goo (P2) and Choking Gas Bombs.",
+            "Abomination driver: Eat Ooze on puddles, save energy for Regurgitated Ooze to slow oozes. P3 = hard burn."
+          ]
+        },
+        {
+          "name": "Blood Prince Council",
+          "summary": "3 princes alive; only the one with Invocation of Blood takes real damage — follow the empower swaps.",
+          "positioning": "Melee spread in 2-3 groups behind active prince (Shock Vortex knockback); back to a wall; ranged spread.",
+          "tank": [
+            "Keleseth tank should be a DK/Warlock — only DoTs hurt him while he's unempowered; survive Empowered Shadow Lance (~100k) with CDs.",
+            "Other tank handles Valanar + Taldaram, swapping as Invocation moves.",
+            "2 or 3 tanks both viable."
+          ],
+          "healer": [
+            "Tunnel the Keleseth tank through Empowered Shadow Lance (huge hits).",
+            "Constant raid damage from Vortex/Flames — keep everyone topped.",
+            "Spread so Shock Vortex doesn't chain-knock multiple players."
+          ],
+          "dps": [
+            "Only DPS the empowered prince (Invocation of Blood); swap on every empower change.",
+            "Keep Kinetic Bombs (Valanar) bouncing — knock them up to stop them hitting the floor (pets/ranged).",
+            "Spread, back to wall, dodge Empowered Flames; on Keleseth phase, DoT all 3 if assigned."
+          ]
+        },
+        {
+          "name": "Blood-Queen Lana'thel",
+          "summary": "Vampiric Bite chain spreads a haste buff; follow the bite order or get Mind Controlled. Soft enrage.",
+          "positioning": "Melee in spread groups behind boss; ranged spread; linked Pact players stack together to clear it.",
+          "tank": [
+            "Both tanks stack as close to the boss as possible (Blood Mirror reflect to off-tank).",
+            "Off-tank takes Delirious Slash bleed — needs priority healing.",
+            "Save personal CDs for late fight when raid is fully bitten."
+          ],
+          "healer": [
+            "Raid CD rotation on each Bloodbolt Whirl (~every 2 min, massive AoE).",
+            "Heal Swarming Shadows runner and the off-tank.",
+            "Beg for Innervate early — mana-intensive fight."
+          ],
+          "dps": [
+            "FOLLOW YOUR BITE ORDER — when bitten you have 10s to bite another or you Mind Control; highest DPS bitten first for buff uptime.",
+            "Essence of the Blood Queen = +damage; ride it.",
+            "Pact of the Darkfallen: linked players stack instantly to clear; spread for Bloodbolt Whirl. Race the enrage."
+          ]
+        },
+        {
+          "name": "Valithria Dreamwalker",
+          "summary": "Healing race — heal Valithria to 100% before enrage while DPS clears adds.",
+          "positioning": "Valithria in center; healers cycle through Dream portals for buff stacks; tanks/DPS handle adds around the room.",
+          "tank": [
+            "Pick up Gluttonous Abominations, face them away from raid (Gut Spray / splash).",
+            "Taunt/kite Blistering Zombies away from the group.",
+            "Mostly add control — not a boss-tanking fight."
+          ],
+          "healer": [
+            "This is YOUR race: heal Valithria up, not the raid.",
+            "Use Dream portals to stack Emerald Vigor (haste/healing); grab clouds inside for amplification, then heal the boss.",
+            "Coordinate raid-healing-increase CDs while stacks are high; keep ~2 healers outside on adds/dispels."
+          ],
+          "dps": [
+            "Priority kill order: Blazing Skeleton (Lay Waste) > Suppresser (cuts Valithria's healing) > Risen Archmage.",
+            "Interrupt Risen Archmage; dodge Column of Frost / Mana Void.",
+            "Kill Gluttonous Abominations + their spawns; slow Blistering Zombies."
+          ]
+        },
+        {
+          "name": "Sindragosa",
+          "summary": "Frost Aura DoT, air-phase Ice Tombs for LoS, then a Mystic Buffet stack-management P2.",
+          "positioning": "Tank boss sideways (head + tail away from raid); melee at her flank; casters spread; in P2 use Ice Tombs as LoS blockers.",
+          "tank": [
+            "Tank boss sideways so Frost Breath/Tail Smash miss the raid; swap after ~3 Frost Breaths.",
+            "Frost Resist gear (~280) cuts Frost Breath ~50%; CD each Frost Breath.",
+            "P3: alternate tanking with LoS-ing behind an Ice Tomb to drop Mystic Buffet."
+          ],
+          "healer": [
+            "Call out Unchained Magic — those debuffed move out before it detonates raid AoE.",
+            "CD with tanks on each Frost Breath; 6-8 healers, even number for Unchained distribution.",
+            "P3: hide behind Ice Tombs to reset Mystic Buffet stacks."
+          ],
+          "dps": [
+            "Melee attack from her midsection; stop at ~6 Chilled to the Bone stacks until it drops.",
+            "Casters watch Unchained Magic (Instability) — stop casting at 3-4 stacks or you blow up.",
+            "Air phase: hide behind Ice Tombs to dodge Frost Bombs; P3 burn while LoS-resetting Mystic Buffet behind tombs."
+          ]
+        },
+        {
+          "name": "The Lich King",
+          "summary": "Hardest boss in the game: tank-swap Infest, dodge Defile, manage Necrotic Plague + Val'kyrs, survive Soul Reaper.",
+          "positioning": "Boss faced away from raid at center; everyone spread to the platform's outer edge for Defile; melee stay close, ranged max-spread.",
+          "tank": [
+            "Tank-swap on Infest stacks; off-tank instantly grabs Drudge Ghouls and Shambling Horrors.",
+            "Coordinate a major CD for EVERY Soul Reaper — it will one-shot otherwise.",
+            "Keep boss faced away; reposition cleanly out of Defile."
+          ],
+          "healer": [
+            "Pre-CD every Soul Reaper window with the tanks.",
+            "Heavy raid damage from Infest/Defile; dispel Necrotic Plague only on the assigned Drudge-Ghoul stack point.",
+            "During Val'kyr, top the grabbed player while ranged free them."
+          ],
+          "dps": [
+            "Move OUT of Defile the instant it lands — it grows each tick and is the #1 wipe cause; stay spread on the edge.",
+            "Burn Val'kyrs fast to free the carried player before they're thrown off.",
+            "Let Necrotic Plague jump to the Drudge Ghouls (don't random-dispel); kill Shambling Horrors (interrupt Enrage). Race transitions."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Onyxia's Lair (Level 80)",
+      "aliases": [
+        "Ony",
+        "Onyxia",
+        "Onyxia 80"
+      ],
+      "type": "raid",
+      "levelRange": "80 (10/25)",
+      "generalTips": [
+        "Three-phase fight: ground (P1) > air (P2, 65%) > ground + whelps (P3, 40%).",
+        "Approach laterally so you avoid Cleave (front), Flame Breath (front), and Tail Sweep (rear).",
+        "Watch for 'Deep Breath' (full-room fire) shout in the air phase and avoid the breath path."
+      ],
+      "bosses": [
+        {
+          "name": "Onyxia",
+          "summary": "Position to dodge cleaves/tail, survive the air-phase fireballs and whelps, then burn in P3.",
+          "positioning": "Tank her against the north wall facing away from raid; ranged + healers behind/under her belly; melee on flanks, never in front or directly behind.",
+          "tank": [
+            "Charge first, turn her away, back into the north wall (minimizes Tail Sweep knockback).",
+            "Keep her nose pointed away from the raid (Cleave + Flame Breath ~30k frontal).",
+            "P2: pick up Onyxian Lair Guards that spawn; hold them through the air phase."
+          ],
+          "healer": [
+            "P1: heal Flame Breath spikes (~30k every 15-20s) and Tail Sweep victims.",
+            "P2 air phase: spread for random Fireballs (~hit every 2s) and the Eruption fissures.",
+            "P3: heaviest phase — Flame Breath + whelp swarm; AoE raid healing."
+          ],
+          "dps": [
+            "P1: hit her from the side; stay out of front (Cleave) and rear (Tail Sweep).",
+            "P2: ranged nuke Onyxia in the air, kill Lair Guards/whelps, dodge Eruption (ground fire) and Deep Breath.",
+            "P3: full burn; spread out, AoE whelp waves, keep moving out of fire."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Ruby Sanctum",
+      "aliases": [
+        "RS",
+        "Ruby Sanctum",
+        "RubySanc"
+      ],
+      "type": "raid",
+      "levelRange": "80 (10/25, normal & heroic)",
+      "generalTips": [
+        "Trash: three mini-bosses (Baltharus, Saviana, Zarithrian) before Halion.",
+        "Halion is a 3-phase, two-realm fight; bring 2 tanks and 3-5 healers.",
+        "Have reliable dispellers — both major debuffs (Combustion fire, Consumption shadow) must be dispelled."
+      ],
+      "bosses": [
+        {
+          "name": "Halion",
+          "summary": "P1 physical realm, P2 twilight realm, P3 both realms split — keep Corporeality balanced or a tank dies.",
+          "positioning": "Tank at room edge; raid spread into groups for Meteor Strike. P3: raid splits between Physical and Twilight realms; keep damage even.",
+          "tank": [
+            "P1: tank Halion facing away (Flame Breath); position at edge.",
+            "P2: in the Twilight realm, move boss to dodge the rotating Twilight Cutter beams.",
+            "P3: one tank per realm; watch Corporeality — uneven DPS makes one realm's boss hit far harder."
+          ],
+          "healer": [
+            "Dispel Mark of Combustion (P1) and Mark of Consumption (P2) — dispelled target drops a pool, so they spread out first.",
+            "P3: split healing across both realms, weighting the realm with higher Corporeality (more damage).",
+            "On Heroic, Freedom/cleanse the slow effects."
+          ],
+          "dps": [
+            "P1: spread into groups, run from Meteor Strike impact + its flame walls.",
+            "P2: dodge the rotating Twilight Cutter beam (kill orbs / move with boss).",
+            "P3: split by type — keep DPS roughly EVEN across both realms to hold Corporeality near 50% or the raid wipes."
+          ]
+        }
+      ]
+    }
+  ]
+}

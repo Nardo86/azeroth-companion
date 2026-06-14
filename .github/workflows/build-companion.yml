@@ -1,0 +1,65 @@
+name: Build companion binaries
+
+# Builds a standalone executable for Windows, macOS and Linux.
+# Runs on demand and on version tags (v*), attaching binaries to the release.
+
+on:
+  workflow_dispatch:
+  push:
+    tags: [ "v*" ]
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset: azeroth-companion-linux
+          - os: windows-latest
+            asset: azeroth-companion-windows.exe
+          - os: macos-latest
+            asset: azeroth-companion-macos
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build (Unix)
+        if: runner.os != 'Windows'
+        working-directory: companion
+        run: |
+          pyinstaller --onefile --name azeroth-companion \
+            --add-data "knowledge:knowledge" \
+            azeroth_companion.py
+          mv dist/azeroth-companion "dist/${{ matrix.asset }}"
+
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        working-directory: companion
+        run: |
+          pyinstaller --onefile --name azeroth-companion --add-data "knowledge;knowledge" azeroth_companion.py
+          ren dist\azeroth-companion.exe ${{ matrix.asset }}
+
+      - name: Smoke test (self-test)
+        if: runner.os != 'Windows'
+        working-directory: companion
+        run: ./dist/${{ matrix.asset }} --selftest
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset }}
+          path: companion/dist/${{ matrix.asset }}
+
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: companion/dist/${{ matrix.asset }}

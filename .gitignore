@@ -1,0 +1,26 @@
+# Secrets / local state — NEVER commit your API key
+companion/config.json
+config.json
+inbox-*.json
+companion/inbox-*.json
+*.tmp
+_Inbox.lua.tmp
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# PyInstaller build output
+build/
+dist/
+*.spec
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

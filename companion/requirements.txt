@@ -1,0 +1,5 @@
+# The companion app uses only the Python 3.8+ standard library — no installs needed.
+#
+# Optional, for development only:
+#   lupa        # run the Lua syntax + wire-format check (tools/lua_check.py)
+#   pyinstaller # build a standalone executable (see .github/workflows/build-companion.yml)
