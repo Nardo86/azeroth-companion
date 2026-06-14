@@ -8,6 +8,8 @@ OpenAI-compatible model you choose (including **free** ones).
 Built to work from **WotLK 3.3.5a** (Warmane & other private servers) up through
 WotLK/Cata Classic and modern retail, via a runtime compatibility layer.
 
+☕ **[Buy me a coffee](https://paypal.me/ErosNardi)** — if this saved you some time.
+
 > ⚠️ **Read this first — the one thing that shapes everything:** WoW addons run
 > in a sandbox with **no internet access** (no sockets, no HTTP, no file I/O).
 > An addon *alone* can never call an AI API. Azeroth Companion therefore has two
@@ -110,11 +112,15 @@ character screen (tick *Load out of date AddOns* on 3.3.5 if needed).
   python3 azeroth_companion.py
   ```
 
-### 3. Configure
+### 3. Configure (get a free AI key)
 Copy `companion/config.example.json` to `config.json` and set your
-`endpoint`, `api_key`, `model`, and your `wow_installs` path. See
-[docs/CONFIG.md](docs/CONFIG.md). Then launch the companion **while you play** —
-keep it running in the background.
+`endpoint`, `api_key`, `model`, and your `wow_installs` path.
+
+👉 **Never done this before? Follow the click-by-click, no-jargon guide:
+[docs/SETUP-ENDPOINT.md](docs/SETUP-ENDPOINT.md).** It walks you through getting
+a **free** key in ~3 minutes (no credit card). Reference: [docs/CONFIG.md](docs/CONFIG.md).
+
+Then launch the companion **while you play** — keep it running in the background.
 
 ---
 
@@ -191,10 +197,18 @@ The addon never calls a version-specific API directly — everything goes throug
 - Localized clients may not match the English knowledge-base instance names; the
   model still answers from general knowledge.
 - Roadmap ideas: a watcher that auto-presses reload on a hotkey, a bundled
-  lightweight bundled coordinate DB (no quest helper needed), per-class tips,
+  lightweight coordinate DB (no quest helper needed), per-class tips,
   packaged installers.
 
 Contributions welcome — see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+---
+
+## Support
+
+If Azeroth Companion is useful to you:
+
+⭐ Star the repo • 🐛 [Open an issue](https://github.com/Nardo86/azeroth-companion/issues) • 🔧 Send a PR • ☕ **[Buy me a coffee](https://paypal.me/ErosNardi)**
 
 ---
 
