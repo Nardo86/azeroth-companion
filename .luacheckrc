@@ -46,9 +46,11 @@ read_globals = {
 
 -- Don't nag about these in addon code.
 ignore = {
-  "212",  -- unused argument (event handlers have fixed signatures)
-  "213",  -- unused loop variable
-  "542",  -- empty if branch
+  "211/_.*",   -- unused locals explicitly prefixed with _ (intentional discards)
+  "211/ADDON", -- the addon-name vararg (local ADDON, ns = ...) is rarely used
+  "212",       -- unused argument (event handlers have fixed signatures)
+  "213",       -- unused loop variable
+  "542",       -- empty if branch
 }
 
 exclude_files = { "addon/AzerothCompanion/Libs/json.lua" }  -- vendored, leave as-is

@@ -27,7 +27,7 @@ local tonumber = tonumber
 
 local interfaceNumber
 do
-  local ok, v, b, d, toc = pcall(GetBuildInfo)
+  local ok, _v, _b, _d, toc = pcall(GetBuildInfo)
   interfaceNumber = (ok and tonumber(toc)) or 30300
 end
 
@@ -268,7 +268,7 @@ function Compat.GetInstanceInfo()
   end
   local name, difficultyName
   if _G.GetInstanceInfo then
-    local ok, n, t, diffIndex, diffName = pcall(_G.GetInstanceInfo)
+    local ok, n, _t, _diffIndex, diffName = pcall(_G.GetInstanceInfo)
     if ok then
       name = n
       difficultyName = diffName
@@ -343,7 +343,7 @@ function Compat.GetQuestLogTitle(index)
   elseif interfaceNumber < 40000 then
     -- (2) 3.3.5a / TBC / Vanilla positional signature (questID added in 3.3.0):
     -- title, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, questID
-    local title, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, questID = GetQuestLogTitle(index)
+    local title, level, questTag, suggestedGroup, isHeader, _isCollapsed, isComplete, isDaily, questID = GetQuestLogTitle(index)
     if title == nil then return nil end
     return {
       title      = title,
@@ -359,7 +359,7 @@ function Compat.GetQuestLogTitle(index)
   else
     -- (3) Post-6.0 global signature (e.g. a Cata-era client without GetInfo):
     -- title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID
-    local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID = GetQuestLogTitle(index)
+    local title, level, suggestedGroup, isHeader, _isCollapsed, isComplete, frequency, questID = GetQuestLogTitle(index)
     if title == nil then return nil end
     return {
       title      = title,
