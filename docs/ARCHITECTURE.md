@@ -11,6 +11,7 @@ addon/AzerothCompanion/        the in-game addon (Lua, WoW sandbox)
     Config.lua                 SavedVariables, defaults, gameplay prefs
     Context.lua                builds the live situation snapshot
     Questie.lua                optional runtime read of Questie's coordinate DB
+    PfQuest.lua                optional runtime read of pfQuest's coordinate DB
     Bridge.lua                 ★ outbox/inbox transport + reload state machine
     Init.lua                   events, slash commands, bootstrap
   UI/ChatFrame.lua             the movable chat window (pure Lua, cross-version)
@@ -59,8 +60,9 @@ docs/                          this folder
 
 - **Add a provider:** it only needs to speak OpenAI `/v1/chat/completions`. Set
   `endpoint`/`api_key`/`model`; add a preset in `PRESETS` if you like.
-- **Improve quest coordinates without Questie:** implement a lookup in
-  `Context.lua`/a new module and attach it as `quests[].questie`-shaped data.
+- **Add a coordinate source:** implement `IsAvailable()` + `GetQuestData(questID)`
+  (same shape as `Questie.lua`/`PfQuest.lua`) and slot it into the `getCoords`
+  dispatcher in `Context.lua`; it attaches as `quests[].coords`.
 - **Grow the knowledge base:** edit `companion/knowledge/*.json`
   (`name`, `aliases`, `bosses[].{tank,healer,dps,positioning}`). It's injected by
   `KnowledgeBase.format_for` when the instance name or a boss name is matched.

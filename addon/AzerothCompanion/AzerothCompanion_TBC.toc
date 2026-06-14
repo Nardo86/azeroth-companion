@@ -5,7 +5,7 @@
 ## Version: 0.1.0
 ## SavedVariables: AzerothCompanionDB
 ## SavedVariablesPerCharacter: AzerothCompanionCharDB
-## OptionalDeps: Questie
+## OptionalDeps: Questie, pfQuest
 ## X-Website: https://github.com/Nardo86/azeroth-companion
 ## X-Category: Chat/Communication
 
@@ -15,6 +15,7 @@ Core\Compat.lua
 Core\Config.lua
 Core\Context.lua
 Core\Questie.lua
+Core\PfQuest.lua
 Core\Bridge.lua
 _Inbox.lua
 UI\ChatFrame.lua

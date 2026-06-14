@@ -18,8 +18,11 @@
   at the time of writing; runtime interop is the low-risk path and the only one
   we use. If you maintain Questie and want this interop changed, please open an
   issue.
-- **[pfQuest-wotlk](https://github.com/Bennylavaa/pfQuest-wotlk)** (GPLv3) — a
-  possible alternative coordinate source; not currently integrated.
+- **[pfQuest](https://github.com/shagu/pfQuest)** / **[pfQuest-wotlk](https://github.com/Bennylavaa/pfQuest-wotlk)**
+  (GPLv3) — used at runtime as a second, version-agnostic coordinate source when
+  installed (read-only, same as Questie). We ship none of its data, so reading
+  its in-memory tables does not entangle this MIT addon with GPLv3. The provider
+  is chosen automatically: Questie first, then pfQuest.
 
 ## Knowledge base
 

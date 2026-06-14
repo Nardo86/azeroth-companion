@@ -92,15 +92,18 @@ Built by `Core/Context.lua` from live game state:
     { "title": "...", "level": 72, "questID": 11378, "isComplete": false,
       "difficulty": "standard", "rewardXP": 25200,
       "objectives": [ { "text": "Slain Nerubians: 3/8", "have": 3, "need": 8, "finished": false } ],
-      "questie":    { "finisher": { "name": "...", "zone": "...", "x": 60, "y": 63 },
+      "coords":     { "source": "questie",
+                      "finisher": { "name": "...", "zone": "...", "x": 60, "y": 63 },
                       "objectives": [ { "name": "...", "zone": "...", "x": 45, "y": 21 } ] }
     }
   ]
 }
 ```
 
-`quests[].questie` is present only when the player has Questie installed (it's
-read at runtime from Questie's in-memory DB — never bundled).
+`quests[].coords` is present only when the player has a quest helper installed.
+It is read at runtime from **Questie** or **pfQuest**'s in-memory DB (never
+bundled); `source` says which one. Reading the version's own helper keeps the
+addon version-agnostic.
 
 ## State machine (survives reloads)
 

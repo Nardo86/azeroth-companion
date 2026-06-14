@@ -133,13 +133,16 @@ local function handleSlash(msg)
     end
   elseif cmd == "status" then
     local role, forced = ns.Config.GetEffectiveRole()
-    ns.Print(string.format("lang=%s role=%s%s xp=%sx verbosity=%s auto=%s questie=%s",
+    local coordsSrc = "none"
+    if ns.Questie and ns.Questie.IsAvailable() then coordsSrc = "questie"
+    elseif ns.PfQuest and ns.PfQuest.IsAvailable() then coordsSrc = "pfquest" end
+    ns.Print(string.format("lang=%s role=%s%s xp=%sx verbosity=%s auto=%s coords=%s",
       ns.Config.GetEffectiveLanguage(),
       tostring(role), forced and "(set)" or "(auto)",
       tostring(ns.Config.Get("xpMultiplier")),
       tostring(ns.Config.Get("verbosity")),
       tostring(ns.Config.Get("autoReload")),
-      tostring(ns.Questie and ns.Questie.IsAvailable())))
+      coordsSrc))
   elseif cmd == "reset" then
     if ns.Config.db then ns.Config.db.framePos = nil end
     ns.Print("window position reset - /reload to apply")

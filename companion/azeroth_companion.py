@@ -407,7 +407,7 @@ def build_system_prompt(ctx, cfg, kb):
     )
     parts.append(
         "Never invent map coordinates. Give exact coords ONLY when they appear in the data "
-        "(a quest's 'questie' block). Otherwise guide by zone, sub-zone, landmarks and known "
+        "(a quest's 'coords' block). Otherwise guide by zone, sub-zone, landmarks and known "
         "locations for this version of the game, and say when you are not certain."
     )
     parts.append("Player role: " + role + ". " + ROLE_LENS.get(role, ROLE_LENS["unknown"]))

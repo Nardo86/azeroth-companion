@@ -23,10 +23,12 @@ WotLK/Cata Classic and modern retail, via a runtime compatibility layer.
 - 🧭 **Quest help, grounded in your real quest log** — it reads your active
   quests, objectives and progress live from the game and tells you *what to
   kill, what to collect, who to talk to, and roughly where*. Never generic.
-- 📍 **Coordinates via Questie (optional)** — if you already run
-  [Questie](https://github.com/Krigsgaldrnet/Questie-3.3.5), it borrows exact
-  spawn/turn-in coordinates from Questie's in-memory database. No Questie? It
-  falls back to directions by zone and landmarks.
+- 📍 **Coordinates via Questie or pfQuest (optional)** — if you run
+  [Questie](https://github.com/Krigsgaldrnet/Questie-3.3.5) or
+  [pfQuest](https://github.com/shagu/pfQuest), it borrows exact spawn/turn-in
+  coordinates from their in-memory database at runtime (Questie preferred, then
+  pfQuest). Reading the version's own helper keeps this version-agnostic. No
+  helper? It falls back to directions by zone and landmarks.
 - ⚔️ **Role-aware dungeon & raid coaching** — detects your spec/role (or lets
   you override it) and gives **tank / healer / DPS**-specific positioning and
   the mechanics that matter, backed by a bundled, verified WotLK knowledge base
@@ -189,7 +191,7 @@ The addon never calls a version-specific API directly — everything goes throug
 - Localized clients may not match the English knowledge-base instance names; the
   model still answers from general knowledge.
 - Roadmap ideas: a watcher that auto-presses reload on a hotkey, a bundled
-  lightweight coordinate DB (no Questie needed), per-class rotation tips,
+  lightweight bundled coordinate DB (no quest helper needed), per-class tips,
   packaged installers.
 
 Contributions welcome — see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).

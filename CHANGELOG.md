@@ -12,7 +12,9 @@ Initial release.
 - Cross-version compatibility layer (`Core/Compat.lua`) targeting WotLK 3.3.5a
   first, with `.toc` files for Wrath/Cata Classic, retail, TBC and Vanilla.
 - Live context snapshot (quest log, position, target, role, instance, group).
-- Optional runtime integration with Questie for coordinates.
+- Optional runtime integration with Questie and pfQuest for coordinates,
+  auto-selected per client version (Questie preferred, then pfQuest); never
+  bundled, so it stays version-agnostic without shipping any helper's data.
 - Role detection (talent-tab inference on 3.3.5, `GetSpecialization` on retail)
   with `/ac role` override.
 - High-XP-server quest optimization guidance via `/ac xp <n>`.

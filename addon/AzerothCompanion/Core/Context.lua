@@ -20,12 +20,26 @@ local function round(n, places)
   return math.floor(n * m + 0.5) / m
 end
 
+-- Pick coordinate data ("where to go") for a quest from the best available
+-- helper, or nil. Tries Questie first, then pfQuest; both are read-only runtime
+-- sources, and reading the version's own helper keeps this version-agnostic.
+local function getCoords(questID)
+  if not questID or not ns.Config.Get("useCoords") then return nil end
+  if ns.Questie and ns.Questie.IsAvailable() then
+    local d = ns.Questie.GetQuestData(questID)
+    if d then d.source = d.source or "questie"; return d end
+  end
+  if ns.PfQuest and ns.PfQuest.IsAvailable() then
+    local d = ns.PfQuest.GetQuestData(questID)
+    if d then return d end
+  end
+  return nil
+end
+
 -- Build the active-quest list from the quest log.
 local function buildQuests()
   local Compat = ns.Compat
-  local Config = ns.Config
   local playerLevel = Compat.GetPlayerLevel()
-  local useQuestie = Config.Get("useQuestie") and ns.Questie and ns.Questie.IsAvailable()
 
   local quests = {}
   local num = Compat.GetNumQuestLogEntries() or 0
@@ -47,11 +61,9 @@ local function buildQuests()
       local xp = Compat.GetQuestRewardXP(index, q.questID)
       if xp then entry.rewardXP = xp end
 
-      -- Optional: enrich with Questie coordinates / zone for "where to go".
-      if useQuestie and q.questID then
-        local qd = ns.Questie.GetQuestData(q.questID)
-        if qd then entry.questie = qd end
-      end
+      -- Optional: enrich with coordinates ("where to go") from Questie/pfQuest.
+      local coords = getCoords(q.questID)
+      if coords then entry.coords = coords end
 
       quests[#quests + 1] = entry
     end

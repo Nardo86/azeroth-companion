@@ -25,7 +25,7 @@ local DEFAULTS = {
   autoReload     = true,     -- auto /reload to flush the question and fetch the answer
   refreshDelay   = 3,        -- seconds to wait before the fetch reload
   maxAutoRefresh = 3,        -- give up auto-refreshing after this many tries
-  useQuestie     = true,     -- pull coordinates from Questie when it is installed
+  useCoords      = true,     -- pull coordinates from Questie/pfQuest when installed
   channelName    = "Companion",
   greeted        = false,
 }
