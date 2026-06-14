@@ -7,13 +7,15 @@
   // ===========================================================================
 
   // --- LLM endpoint (OpenAI-compatible /v1/chat/completions) ----------------
-  // Pick ONE provider. Free options (no credit card unless noted):
+  // Pick ONE provider. Free options (no credit card unless noted). Groq is the
+  // recommended starting point (fast, and its free tier is steadier than
+  // OpenRouter's ":free" models):
   //
+  //   Groq       : https://api.groq.com/openai/v1
+  //                model e.g. "llama-3.3-70b-versatile"  (~30 req/min, 1000/day)
   //   OpenRouter : https://openrouter.ai/api/v1
   //                model e.g. "meta-llama/llama-3.3-70b-instruct:free"
   //                (free models end in ":free"; ~20 req/min, 50/day)
-  //   Groq       : https://api.groq.com/openai/v1
-  //                model e.g. "llama-3.3-70b-versatile"  (~30 req/min, 1000/day)
   //   Gemini     : https://generativelanguage.googleapis.com/v1beta/openai/
   //                model e.g. "gemini-2.5-flash"  (key from Google AI Studio)
   //   Ollama     : http://localhost:11434/v1   (fully local & offline, no key)
@@ -21,9 +23,25 @@
   //
   // Tip: run `python azeroth_companion.py --list-presets` to print these.
 
-  "endpoint": "https://openrouter.ai/api/v1",
+  "endpoint": "https://api.groq.com/openai/v1",
   "api_key": "PASTE-YOUR-API-KEY-HERE",
-  "model": "meta-llama/llama-3.3-70b-instruct:free",
+  "model": "llama-3.3-70b-versatile",
+
+  // --- Multiple endpoints with automatic fallback (optional) ----------------
+  // Instead of the single endpoint above you can list several: the companion
+  // tries them in order and falls over to the next on ANY failure (rate limit,
+  // 403/Cloudflare, timeout, network error). Free tiers go down or throttle a
+  // lot, so a chain makes the bot far more robust. Groq tends to be steadier
+  // than OpenRouter's ":free" tier, so it's listed first here. If "endpoints"
+  // is present it takes precedence over the single endpoint/api_key/model above.
+  // Give each entry its own api_key. Each entry may also override model /
+  // temperature / max_tokens / request_timeout / http_referer / x_title.
+  //
+  // "endpoints": [
+  //   { "endpoint": "https://api.groq.com/openai/v1", "api_key": "gsk_...",   "model": "llama-3.3-70b-versatile" },
+  //   { "endpoint": "https://openrouter.ai/api/v1",   "api_key": "sk-or-...", "model": "meta-llama/llama-3.3-70b-instruct:free" },
+  //   { "endpoint": "http://localhost:11434/v1",      "api_key": "ollama",    "model": "llama3.2" }
+  // ],
 
   // --- assistant behaviour ---------------------------------------------------
   // Default reply language ("auto" lets the addon decide from the game locale;

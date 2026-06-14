@@ -3,6 +3,32 @@
 All notable changes to this project are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-06-14
+
+### Added
+- **Multiple endpoints with automatic fallback** (#2): configure an `endpoints`
+  list and the companion tries them in order, failing over to the next on any
+  error (rate limit, `403`/Cloudflare, timeout, network). Per-endpoint overrides
+  for `model`/`temperature`/`max_tokens`/`request_timeout`/`http_referer`/
+  `x_title`. Non-last endpoints fail over fast (≤30s); the last one uses its full
+  `request_timeout` and retries `429` honouring `Retry-After` (clamped to 30s).
+  Each entry carries its own key — the top-level key is never sent to a
+  different host. The single-endpoint config form keeps working unchanged.
+
+### Fixed
+- **Groq/Cloudflare 403** (#1): always send a real `User-Agent` header.
+  Cloudflare blocks the stdlib default (`Python-urllib/x.y`) with HTTP 403 /
+  error 1010, which looked like a bad API key. A 403 is no longer reported as a
+  definite auth error — only 401 is; 403s surface the upstream body and flag
+  likely firewall blocks.
+- Read timeouts now report a clear "Timed out …" message instead of a generic
+  "Unexpected error".
+
+### Changed
+- **Groq is now the recommended/default provider** (its free tier is steadier
+  than OpenRouter's `:free` models): docs, `config.example.json`, the built-in
+  default config and `--list-presets` all lead with Groq.
+
 ## [0.1.0] - 2026-06-14
 
 Initial release.

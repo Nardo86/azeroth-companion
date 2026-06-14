@@ -22,13 +22,14 @@ import glob
 import json
 import os
 import re
+import socket
 import sys
 import time
 import urllib.error
 import urllib.request
 from pathlib import Path
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 PROTOCOL = 1
 ADDON_FOLDER = "AzerothCompanion"
 
@@ -40,15 +41,15 @@ OUTBOX_RE = re.compile(r'\[?"?outbox_b64"?\]?\s*=\s*"([A-Za-z0-9+/=]*)"')
 # ----------------------------------------------------------------------------
 
 PRESETS = {
+    "groq": {
+        "endpoint": "https://api.groq.com/openai/v1",
+        "model": "llama-3.3-70b-versatile",
+        "note": "No card. ~30 RPM / 1000 RPD. Open-source models only. Steadiest free tier.",
+    },
     "openrouter": {
         "endpoint": "https://openrouter.ai/api/v1",
         "model": "meta-llama/llama-3.3-70b-instruct:free",
         "note": "Free models use the ':free' suffix. No card to sign up. ~20 RPM, 50/day (1000/day after one-time $10).",
-    },
-    "groq": {
-        "endpoint": "https://api.groq.com/openai/v1",
-        "model": "llama-3.3-70b-versatile",
-        "note": "No card. ~30 RPM / 1000 RPD. Open-source models only.",
     },
     "gemini": {
         "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/",
@@ -69,9 +70,9 @@ LANG_NAMES = {
 }
 
 DEFAULT_CONFIG = {
-    "endpoint": "https://openrouter.ai/api/v1",
+    "endpoint": "https://api.groq.com/openai/v1",
     "api_key": "",
-    "model": "meta-llama/llama-3.3-70b-instruct:free",
+    "model": "llama-3.3-70b-versatile",
     "language": "auto",
     "temperature": 0.4,
     "max_tokens": 700,
@@ -485,63 +486,207 @@ def chat_completion_url(endpoint):
     return e + "/chat/completions"
 
 
-def call_llm(cfg, messages, verbose=False):
-    """Returns (content, model_used, error_string)."""
-    url = chat_completion_url(cfg.get("endpoint"))
-    body = {
-        "model": cfg.get("model"),
-        "messages": messages,
+# A real User-Agent. Some providers (e.g. Groq) sit behind Cloudflare, which
+# blocks the stdlib default "Python-urllib/x.y" with HTTP 403 / error 1010
+# ("banned based on client signature"). Sending a normal UA avoids that (#1).
+USER_AGENT = "AzerothCompanion/%s (+https://github.com/Nardo86/azeroth-companion)" % VERSION
+
+
+def resolve_endpoints(cfg):
+    """Normalise config into an ordered list of endpoint dicts to try in turn.
+
+    Two shapes are accepted (the single-endpoint form stays valid for
+    back-compat):
+
+      - legacy: top-level "endpoint" / "api_key" / "model"
+      - chain : "endpoints": [ { "endpoint", "api_key", "model", ... }, ... ]
+
+    Each chain entry may override temperature / max_tokens / request_timeout /
+    http_referer / x_title; whatever it omits inherits the top-level value.
+    """
+    base = {
         "temperature": cfg.get("temperature", 0.4),
         "max_tokens": cfg.get("max_tokens", 700),
+        "request_timeout": cfg.get("request_timeout", 60),
+        "http_referer": cfg.get("http_referer"),
+        "x_title": cfg.get("x_title"),
+    }
+    out = []
+    raw = cfg.get("endpoints")
+    if isinstance(raw, list):
+        for entry in raw:
+            if not isinstance(entry, dict):
+                continue
+            has_own_endpoint = bool(entry.get("endpoint"))
+            ep = dict(base)
+            ep.update({k: v for k, v in entry.items() if v is not None})
+            ep.setdefault("endpoint", cfg.get("endpoint"))
+            ep.setdefault("model", cfg.get("model"))
+            # Inherit the top-level api_key ONLY when this entry reuses the
+            # top-level provider (no endpoint of its own). A foreign-host entry
+            # must carry its own key, so one provider's secret is never sent to
+            # another host.
+            if "api_key" not in ep:
+                ep["api_key"] = "" if has_own_endpoint else (cfg.get("api_key", "") or "")
+            if ep.get("endpoint"):
+                out.append(ep)
+    if not out:  # legacy single-endpoint form (or an empty/invalid list)
+        ep = dict(base)
+        ep["endpoint"] = cfg.get("endpoint")
+        ep["api_key"] = cfg.get("api_key", "") or ""
+        ep["model"] = cfg.get("model")
+        out.append(ep)
+    return out
+
+
+def parse_retry_after(value):
+    """Parse a Retry-After header into a wait in seconds, or None if unparsable.
+
+    Honours the integer-seconds form (what Groq / OpenRouter send) and, as a
+    bonus, the HTTP-date form.
+    """
+    if not value:
+        return None
+    value = value.strip()
+    try:
+        return max(0, int(value))
+    except ValueError:
+        pass
+    try:
+        from email.utils import parsedate_to_datetime
+        when = parsedate_to_datetime(value)
+        if when is not None:
+            return max(0, int(when.timestamp() - time.time()))
+    except Exception:
+        pass
+    return None
+
+
+def classify_http_error(code, detail):
+    """Map an HTTPError to a clear, non-misleading message (see #1).
+
+    Notably, a 403 is NOT always an auth problem: Cloudflare returns 403/1010
+    for a blocked client signature, and some providers 403 a model the key
+    can't access. Only 401 is reported as a definite key problem.
+    """
+    detail = detail or ""
+    low = detail.lower()
+    cloudflare = ("cloudflare" in low or "error code: 1010" in low or "just a moment" in low)
+    if code == 401:
+        return "Auth error (HTTP 401): api_key missing, wrong or expired. %s" % detail
+    if code == 403:
+        if cloudflare:
+            return ("Blocked by the endpoint's firewall (HTTP 403 / Cloudflare 1010) - "
+                    "this is NOT your api_key (a normal User-Agent is already sent). %s" % detail)
+        return ("Forbidden (HTTP 403): the key may lack access to this model, or the "
+                "request was blocked upstream - not necessarily an auth problem. %s" % detail)
+    return "HTTP %s: %s" % (code, detail)
+
+
+def call_endpoint(ep, messages, max_attempts=1, timeout_override=None):
+    """Call a single endpoint, retrying 429 up to max_attempts.
+
+    Returns (content, model_used, error_string); error_string is None on success.
+    A 429 retry honours the server's Retry-After (clamped to 30s) and otherwise
+    backs off linearly. timeout_override lets the caller shorten the wait (used
+    to fail over fast between endpoints in a chain).
+    """
+    url = chat_completion_url(ep.get("endpoint"))
+    body = {
+        "model": ep.get("model"),
+        "messages": messages,
+        "temperature": ep.get("temperature", 0.4),
+        "max_tokens": ep.get("max_tokens", 700),
         "stream": False,
     }
     data = json.dumps(body).encode("utf-8")
-    headers = {"Content-Type": "application/json"}
-    key = cfg.get("api_key")
+    headers = {"Content-Type": "application/json", "User-Agent": USER_AGENT}
+    key = ep.get("api_key")
     if key:
         headers["Authorization"] = "Bearer " + key
-    if cfg.get("http_referer"):
-        headers["HTTP-Referer"] = cfg["http_referer"]
-    if cfg.get("x_title"):
-        headers["X-Title"] = cfg["x_title"]
+    if ep.get("http_referer"):
+        headers["HTTP-Referer"] = ep["http_referer"]
+    if ep.get("x_title"):
+        headers["X-Title"] = ep["x_title"]
 
-    timeout = cfg.get("request_timeout", 60)
-    attempts = 0
+    timeout = timeout_override if timeout_override is not None else ep.get("request_timeout", 60)
+    model = ep.get("model")
+    attempt = 0
     while True:
-        attempts += 1
+        attempt += 1
         req = urllib.request.Request(url, data=data, headers=headers, method="POST")
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 payload = json.loads(resp.read().decode("utf-8"))
             choices = payload.get("choices") or []
             if not choices:
-                return None, cfg.get("model"), "empty response from endpoint"
+                return None, model, "empty response from endpoint"
             msg = choices[0].get("message", {})
             content = msg.get("content")
             if isinstance(content, list):  # some providers return content parts
                 content = "".join(p.get("text", "") for p in content if isinstance(p, dict))
-            model_used = payload.get("model") or cfg.get("model")
-            return content, model_used, None
+            return content, payload.get("model") or model, None
         except urllib.error.HTTPError as e:
             detail = ""
             try:
                 detail = e.read().decode("utf-8")[:400]
             except Exception:
                 pass
-            if e.code == 429 and attempts < 3:
-                wait = 6 * attempts
-                print(f"[rate-limit] HTTP 429; retrying in {wait}s ...")
+            if e.code == 429 and attempt < max_attempts:
+                wait = parse_retry_after(e.headers.get("Retry-After")) if e.headers else None
+                wait = 6 * attempt if wait is None else min(wait, 30)
+                print("[rate-limit] HTTP 429; retrying in %ss ..." % wait)
                 time.sleep(wait)
                 continue
             if e.code == 429:
-                return None, cfg.get("model"), "Rate limit reached (free tier). Try again shortly or switch model/provider."
-            if e.code in (401, 403):
-                return None, cfg.get("model"), f"Auth error (HTTP {e.code}). Check api_key. {detail}"
-            return None, cfg.get("model"), f"HTTP {e.code}: {detail}"
+                return None, model, "Rate limit reached (HTTP 429, free tier). Try again shortly or switch model/provider."
+            return None, model, classify_http_error(e.code, detail)
+        except (socket.timeout, TimeoutError):
+            # A *read* timeout (urlopen timeout=...) raises socket.timeout, which
+            # is not a URLError, so handle it explicitly with a clear message.
+            return None, model, "Timed out after %ss; the endpoint may be slow or down." % timeout
         except urllib.error.URLError as e:
-            return None, cfg.get("model"), f"Network error: {e.reason}. Is the endpoint reachable / is Ollama running?"
+            return None, model, "Network error: %s. Is the endpoint reachable / is Ollama running?" % e.reason
         except Exception as e:
-            return None, cfg.get("model"), f"Unexpected error: {e}"
+            return None, model, "Unexpected error: %s" % e
+
+
+def call_llm(cfg, messages, verbose=False):
+    """Try each configured endpoint in order, returning the first success.
+
+    On any failure (HTTP error, rate limit, timeout, transport error) it fails
+    over to the next endpoint. The only/last endpoint still retries 429 with
+    backoff, so a lone provider keeps the resilience it had before.
+
+    Returns (content, model_used, error_string).
+    """
+    endpoints = resolve_endpoints(cfg)
+    total = len(endpoints)
+    detailed = []
+    last_raw = None
+    last_model = endpoints[-1].get("model")
+    for i, ep in enumerate(endpoints):
+        is_last = (i == total - 1)
+        # Fail over fast between endpoints; let the only/last one retry 429 and
+        # use its full timeout. Earlier endpoints get a capped timeout so one
+        # slow/hanging provider can't stall the whole chain for minutes.
+        max_attempts = 3 if is_last else 1
+        timeout_override = None if is_last else min(ep.get("request_timeout", 60), 30)
+        content, model_used, error = call_endpoint(
+            ep, messages, max_attempts=max_attempts, timeout_override=timeout_override)
+        if error is None:
+            if total > 1:
+                print("[endpoint] served by #%d/%d: %s (%s)" % (i + 1, total, ep.get("endpoint"), model_used))
+            return content, model_used, None
+        last_raw = error
+        detailed.append("#%d %s (%s): %s" % (i + 1, ep.get("endpoint"), ep.get("model"), error))
+        if not is_last:
+            first_line = (error.splitlines()[0] if error else "")[:140]
+            print("[fallback] endpoint #%d/%d %s failed: %s; trying next ..."
+                  % (i + 1, total, ep.get("endpoint"), first_line))
+    if total == 1:
+        return None, last_model, last_raw
+    return None, last_model, "All %d endpoints failed:\n  " % total + "\n  ".join(detailed)
 
 
 # ----------------------------------------------------------------------------
@@ -679,8 +824,12 @@ def selftest(cfg, kb):
     back = json.loads(base64.b64decode(raw).decode())
     assert back["answers"]["1-1"]["answer"] == "Ciao!"
     print("  inbox round-trip: OK")
-    print(f"  endpoint URL: {chat_completion_url(cfg.get('endpoint'))}")
-    print(f"  model: {cfg.get('model')}  key set: {bool(cfg.get('api_key'))}")
+    eps = resolve_endpoints(cfg)
+    print("  endpoints (%d, tried in order):" % len(eps))
+    for i, ep in enumerate(eps):
+        print("    #%d %s  model=%s  key=%s"
+              % (i + 1, chat_completion_url(ep.get("endpoint")), ep.get("model"),
+                 "set" if ep.get("api_key") else "none"))
     print("== self-test passed ==")
 
 
@@ -721,9 +870,14 @@ def main(argv=None):
         selftest(cfg, kb)
         return 0
 
-    if not cfg.get("api_key") and "localhost" not in (cfg.get("endpoint") or "") and "127.0.0.1" not in (cfg.get("endpoint") or ""):
-        print("[warn] no api_key set and endpoint is not local. Set api_key in config.json "
-              "(or AC_API_KEY env). See docs/CONFIG.md.")
+    warned = set()
+    for ep in resolve_endpoints(cfg):
+        url = ep.get("endpoint") or ""
+        local = "localhost" in url or "127.0.0.1" in url
+        if not ep.get("api_key") and not local and url not in warned:
+            warned.add(url)
+            print("[warn] endpoint %s has no api_key set and is not local. Set it in "
+                  "config.json (or AC_API_KEY env for the single-endpoint form). See docs/CONFIG.md." % url)
 
     installs = discover_installs(cfg)
     if not installs:

@@ -13,6 +13,7 @@ The file supports full-line `//` comments.
 | `endpoint` | OpenRouter `/v1` | OpenAI-compatible base URL. `/chat/completions` is appended automatically. |
 | `api_key` | `""` | Your provider key. Sent as `Authorization: Bearer …`. Leave empty only for local Ollama. |
 | `model` | llama-3.3-70b…:free | Model id (free-text — rosters change). |
+| `endpoints` | — | Optional **list** of `{ endpoint, api_key, model, … }` tried in order with automatic fallback. Takes precedence over the single `endpoint`/`api_key`/`model` above. See [Multiple endpoints](#multiple-endpoints-automatic-fallback). |
 | `language` | `"auto"` | Default reply language; overridden per-request by the addon's `/ac lang`. |
 | `temperature` | `0.4` | Sampling temperature. |
 | `max_tokens` | `700` | Max answer length. |
@@ -23,9 +24,59 @@ The file supports full-line `//` comments.
 | `wow_installs` | `[]` | List of installs. Each is `{ "path": "...", "wtf_path"?, "addons_path"? }`. Empty = auto-detect. |
 | `preset` | — | Optional shortcut: `"openrouter" \| "groq" \| "gemini" \| "ollama"` fills `endpoint`/`model` if unset. |
 
+## Multiple endpoints (automatic fallback)
+
+Free tiers throttle and go down a lot, so you can list several endpoints and the
+companion will **try them in order, failing over to the next on any failure**
+(rate limit, `403`/Cloudflare block, timeout or network error). Add an
+`endpoints` list — when present it replaces the single `endpoint`/`api_key`/
+`model` form:
+
+```jsonc
+{
+  "endpoints": [
+    { "endpoint": "https://api.groq.com/openai/v1", "api_key": "gsk_...",   "model": "llama-3.3-70b-versatile" },
+    { "endpoint": "https://openrouter.ai/api/v1",   "api_key": "sk-or-...", "model": "meta-llama/llama-3.3-70b-instruct:free" },
+    { "endpoint": "http://localhost:11434/v1",      "api_key": "ollama",    "model": "llama3.2" }   // local last resort
+  ]
+}
+```
+
+- Endpoints are tried top to bottom; the console logs which one served each
+  answer (e.g. `[endpoint] served by #2/2: …`) and each failover
+  (`[fallback] endpoint #1/2 … failed: …; trying next`).
+- A `429` honours the server's `Retry-After` (capped at 30s) on the **last**
+  endpoint; between endpoints it fails over immediately so you don't wait.
+- Give each entry its **own** `api_key`. An entry may also override `model`,
+  `temperature`, `max_tokens`, `request_timeout`, `http_referer` and `x_title`;
+  anything omitted inherits the top-level value. An entry with no `endpoint` of
+  its own inherits the top-level one (and its key) — handy for listing several
+  **models on the same provider**. The top-level key is **never** sent to an
+  entry that targets a different host, so a missing key there is just left empty.
+- Between endpoints the companion fails over fast (a non-last endpoint waits at
+  most 30s before moving on); the last endpoint uses its full `request_timeout`.
+- Tip: put a steadier provider first. Groq tends to be more reliable than
+  OpenRouter's `:free` tier (which is prone to upstream `429`s), and a local
+  Ollama makes a good always-available last resort.
+
+> Note: the `AC_ENDPOINT`/`AC_API_KEY`/`AC_MODEL` environment overrides apply to
+> the single-endpoint form. With an `endpoints` list, edit the list directly
+> (the `AC_API_KEY` key only reaches a list entry that reuses the top-level
+> endpoint, never a different host).
+
 ## Provider setups
 
-### OpenRouter (recommended default)
+### Groq (recommended — steadiest free tier)
+
+```json
+{ "endpoint": "https://api.groq.com/openai/v1",
+  "api_key": "gsk_...",
+  "model": "llama-3.3-70b-versatile" }
+```
+No card. ~30 req/min, 1000/day. Open-source models only. Very fast and, in
+practice, less prone to the upstream rate-limits that hit OpenRouter's free tier.
+
+### OpenRouter
 ```json
 { "endpoint": "https://openrouter.ai/api/v1",
   "api_key": "sk-or-...",
@@ -34,14 +85,6 @@ The file supports full-line `//` comments.
 No credit card to start. Free models end in `:free`. ~20 req/min, 50/day
 (permanently 1000/day after a one-time $10 credit). Browse models at
 `openrouter.ai/models` and filter by `:free`.
-
-### Groq
-```json
-{ "endpoint": "https://api.groq.com/openai/v1",
-  "api_key": "gsk_...",
-  "model": "llama-3.3-70b-versatile" }
-```
-No card. ~30 req/min, 1000/day. Open-source models only. Very fast.
 
 ### Google Gemini
 ```json

@@ -19,11 +19,45 @@ Think of it like a key to a door:
 - **api_key** = your personal key to open it
 - **model** = which AI brain to use behind that door
 
-Pick **one** of the options below. **OpenRouter is the recommended starting point.**
+Pick **one** of the options below. **Groq is the recommended starting point** —
+it's very fast and its free tier holds up better than OpenRouter's `:free`
+models, which often get rate-limited upstream. (Even better, you can list
+**several at once** and let the companion fall back automatically — see
+[Use more than one](#use-more-than-one-automatic-fallback) below.)
 
 ---
 
-## Option A — OpenRouter (recommended, free, no card)
+## Option A — Groq (recommended, free, no card, very fast)
+
+### 1. Make an account
+1. Go to **https://console.groq.com** and **Sign in** with Google or GitHub
+   (easiest). No payment, no card.
+
+### 2. Create your key
+1. Open **API Keys** (left sidebar) → **Create API Key**.
+2. Give it any name, e.g. `WoW`, and create it.
+3. **Copy the key now** — it starts with `gsk_...`. You won't be able to see it
+   again later (you can always make a new one if you lose it).
+
+### 3. Put it in config.json
+Open `companion/config.json` (copy it from `config.example.json` if you haven't)
+in any text editor and set:
+
+```json
+{
+  "endpoint": "https://api.groq.com/openai/v1",
+  "api_key": "gsk_PASTE-YOUR-KEY-HERE",
+  "model": "llama-3.3-70b-versatile"
+}
+```
+
+Save the file. **Done!** Jump to [Verify it works](#verify-it-works).
+
+> Free limits: ~30 requests/minute and 1000/day. Open-source models only.
+
+---
+
+## Option B — OpenRouter (free, no card)
 
 ### 1. Make an account
 1. Go to **https://openrouter.ai**
@@ -43,9 +77,6 @@ Pick **one** of the options below. **OpenRouter is the recommended starting poin
    `meta-llama/llama-3.3-70b-instruct:free`.
 
 ### 4. Put it in config.json
-Open `companion/config.json` (copy it from `config.example.json` if you haven't)
-in any text editor and set:
-
 ```json
 {
   "endpoint": "https://openrouter.ai/api/v1",
@@ -56,25 +87,8 @@ in any text editor and set:
 
 Save the file. **Done!** Jump to [Verify it works](#verify-it-works).
 
-> Free limits: about 20 requests/minute and 50/day. Plenty for asking the bot a
-> few questions while you play. (A one-time $10 raises it to 1000/day forever, if
-> you ever want more — totally optional.)
-
----
-
-## Option B — Groq (free, no card, very fast)
-
-1. Go to **https://console.groq.com**, sign in (Google/GitHub).
-2. Open **API Keys** → **Create API Key** → copy it (starts with `gsk_...`).
-3. In `config.json`:
-   ```json
-   {
-     "endpoint": "https://api.groq.com/openai/v1",
-     "api_key": "gsk_PASTE-YOUR-KEY-HERE",
-     "model": "llama-3.3-70b-versatile"
-   }
-   ```
-4. Save. ~30 requests/minute, 1000/day.
+> Free limits: about 20 requests/minute and 50/day. (A one-time $10 raises it to
+> 1000/day forever, if you ever want more — totally optional.)
 
 ---
 
@@ -101,6 +115,29 @@ Best if you have a decent PC and don't want anything leaving your machine.
 
 ---
 
+## Use more than one (automatic fallback)
+
+Free tiers throttle and go down a lot. Instead of a single endpoint you can list
+**several** and the companion will try them in order, automatically falling over
+to the next one the moment one fails (rate limit, firewall block, timeout…).
+Replace the three lines above with an `endpoints` list:
+
+```json
+{
+  "endpoints": [
+    { "endpoint": "https://api.groq.com/openai/v1", "api_key": "gsk_...",   "model": "llama-3.3-70b-versatile" },
+    { "endpoint": "https://openrouter.ai/api/v1",   "api_key": "sk-or-...", "model": "meta-llama/llama-3.3-70b-instruct:free" },
+    { "endpoint": "http://localhost:11434/v1",      "api_key": "ollama",    "model": "llama3.2" }
+  ]
+}
+```
+
+Put your steadiest provider first (Groq), a second free one next, and — if you
+have it — a local Ollama as an always-available last resort. Full details in
+[CONFIG.md](CONFIG.md#multiple-endpoints-automatic-fallback).
+
+---
+
 ## Don't forget: point it at your WoW folder
 
 Also in `config.json`, set the folder that contains **both** `WTF` and
@@ -121,7 +158,7 @@ On Windows use double backslashes `\\` (or forward slashes `/`).
    ```
    python3 azeroth_companion.py --selftest
    ```
-   It should print the endpoint URL and `== self-test passed ==`.
+   It should list your endpoint(s) and print `== self-test passed ==`.
 
 2. **Start the companion** and leave it running:
    ```
@@ -149,8 +186,10 @@ If you see `[ok]`, everything works. 🎉
 
 | You see… | Meaning | Fix |
 |---|---|---|
-| `Auth error (HTTP 401/403)` | wrong/expired key | re-copy the key into `api_key` |
-| `Rate limit reached` (429) | free limit hit | wait a minute, or switch model/provider |
+| `Auth error (HTTP 401)` | wrong/expired key | re-copy the key into `api_key` |
+| `Forbidden (HTTP 403)` | key lacks access to that model, or blocked upstream | try another model; check the key's permissions |
+| `Blocked … (HTTP 403 / Cloudflare 1010)` | the provider's firewall blocked the request (not your key) | usually transient — retry, or list a fallback endpoint |
+| `Rate limit reached` (429) | free limit hit | wait a minute, switch model/provider, or add a fallback endpoint |
 | `Network error … Is the endpoint reachable / is Ollama running?` | can't reach the service | check internet; for Ollama make sure it's running |
 | `No WoW install found` | wrong path | fix `wow_installs[].path` (the folder with `WTF` + `Interface`) |
 | answer never appears in game | companion not running, or no reload | start the companion; click **Refresh** / `/ac get` |

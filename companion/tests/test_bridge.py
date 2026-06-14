@@ -105,6 +105,7 @@ class EndToEndTests(unittest.TestCase):
                 n = int(self.headers.get("Content-Length", 0))
                 captured["body"] = json.loads(self.rfile.read(n).decode())
                 captured["auth"] = self.headers.get("Authorization")
+                captured["ua"] = self.headers.get("User-Agent")
                 resp = {"model": "mock", "choices": [
                     {"message": {"content": "Uccidi 8 Nerubiani a nord; consegna a Larana (à)."}}]}
                 b = json.dumps(resp).encode()
@@ -151,7 +152,260 @@ class EndToEndTests(unittest.TestCase):
                 self.assertIn("Nerubiani", ans["answer"])
 
                 self.assertEqual(captured["auth"], "Bearer secret")
+                # A real User-Agent must be sent (Cloudflare blocks the urllib
+                # default with 403/1010 - see issue #1).
+                self.assertTrue((captured.get("ua") or "").startswith("AzerothCompanion/"))
                 self.assertIn("Azjol-Nerub", captured["body"]["messages"][1]["content"])
+        finally:
+            srv.shutdown()
+
+
+class EndpointResolutionTests(unittest.TestCase):
+    def test_legacy_single_endpoint(self):
+        cfg = {"endpoint": "https://x/v1", "api_key": "k", "model": "m",
+               "temperature": 0.7, "max_tokens": 123}
+        eps = ac.resolve_endpoints(cfg)
+        self.assertEqual(len(eps), 1)
+        self.assertEqual(eps[0]["endpoint"], "https://x/v1")
+        self.assertEqual(eps[0]["api_key"], "k")
+        self.assertEqual(eps[0]["model"], "m")
+        # top-level sampling settings are inherited
+        self.assertEqual(eps[0]["temperature"], 0.7)
+        self.assertEqual(eps[0]["max_tokens"], 123)
+
+    def test_endpoints_chain_order_and_inheritance(self):
+        cfg = {"temperature": 0.4, "max_tokens": 700,
+               "endpoints": [
+                   {"endpoint": "https://a/v1", "api_key": "ka", "model": "ma", "temperature": 0.1},
+                   {"endpoint": "https://b/v1", "api_key": "kb", "model": "mb"},
+               ]}
+        eps = ac.resolve_endpoints(cfg)
+        self.assertEqual([e["endpoint"] for e in eps], ["https://a/v1", "https://b/v1"])
+        # per-entry override wins; otherwise inherit the top-level default
+        self.assertEqual(eps[0]["temperature"], 0.1)
+        self.assertEqual(eps[1]["temperature"], 0.4)
+        self.assertEqual(eps[1]["max_tokens"], 700)
+
+    def test_empty_or_invalid_chain_falls_back_to_legacy(self):
+        cfg = {"endpoint": "https://x/v1", "api_key": "k", "model": "m", "endpoints": []}
+        eps = ac.resolve_endpoints(cfg)
+        self.assertEqual(len(eps), 1)
+        self.assertEqual(eps[0]["endpoint"], "https://x/v1")
+
+    def test_entry_without_endpoint_inherits_top_level(self):
+        # a chain of fallback *models* on the same provider
+        cfg = {"endpoint": "https://x/v1", "api_key": "k",
+               "endpoints": [{"model": "big"}, {"model": "small"}]}
+        eps = ac.resolve_endpoints(cfg)
+        self.assertEqual([e["endpoint"] for e in eps], ["https://x/v1", "https://x/v1"])
+        self.assertEqual([e["model"] for e in eps], ["big", "small"])
+
+    def test_entry_without_endpoint_dropped_when_no_top_level(self):
+        cfg = {"endpoints": [{"model": "noep"}, {"endpoint": "https://y/v1", "model": "my"}]}
+        eps = ac.resolve_endpoints(cfg)
+        self.assertEqual([e["endpoint"] for e in eps], ["https://y/v1"])
+
+    def test_foreign_entry_does_not_inherit_top_level_key(self):
+        # An entry with its OWN (different) endpoint must NOT borrow the
+        # top-level key — that would leak one provider's secret to another host.
+        cfg = {"endpoint": "https://openrouter/v1", "api_key": "sk-or-SECRET",
+               "endpoints": [{"endpoint": "https://groq/v1", "model": "g"}]}
+        eps = ac.resolve_endpoints(cfg)
+        self.assertEqual(eps[0]["endpoint"], "https://groq/v1")
+        self.assertEqual(eps[0]["api_key"], "")
+
+    def test_same_provider_entry_inherits_top_level_key(self):
+        # Keyless entries that reuse the top-level endpoint DO inherit its key.
+        cfg = {"endpoint": "https://x/v1", "api_key": "sk-SECRET",
+               "endpoints": [{"model": "a"}, {"model": "b"}]}
+        eps = ac.resolve_endpoints(cfg)
+        self.assertTrue(all(e["api_key"] == "sk-SECRET" for e in eps))
+
+
+class HttpErrorClassificationTests(unittest.TestCase):
+    def test_401_is_auth_error(self):
+        msg = ac.classify_http_error(401, "no")
+        self.assertIn("401", msg)
+        self.assertIn("api_key", msg)
+
+    def test_403_cloudflare_is_not_auth(self):
+        msg = ac.classify_http_error(403, "<html>Cloudflare ... error code: 1010</html>")
+        self.assertIn("Cloudflare", msg)
+        self.assertIn("NOT your api_key", msg)
+
+    def test_403_generic_is_not_definite_auth(self):
+        msg = ac.classify_http_error(403, "model not permitted for this key")
+        self.assertIn("403", msg)
+        self.assertNotIn("Cloudflare", msg)
+
+    def test_parse_retry_after(self):
+        self.assertEqual(ac.parse_retry_after("12"), 12)
+        self.assertEqual(ac.parse_retry_after("  5 "), 5)
+        self.assertIsNone(ac.parse_retry_after(None))
+        self.assertIsNone(ac.parse_retry_after("soon"))
+
+    def test_parse_retry_after_http_date(self):
+        # HTTP-date form (a date in the past clamps to 0, never negative).
+        self.assertEqual(ac.parse_retry_after("Wed, 21 Oct 2015 07:28:00 GMT"), 0)
+
+
+class RetryAndTimeoutTests(unittest.TestCase):
+    """429 retry/backoff and chain failover timing (time.sleep is mocked)."""
+
+    def _stateful_429_then_200(self, retry_after=None):
+        state = {"calls": 0}
+
+        class H(BaseHTTPRequestHandler):
+            def log_message(self, *a):
+                pass
+
+            def do_POST(self):
+                n = int(self.headers.get("Content-Length", 0))
+                self.rfile.read(n)
+                state["calls"] += 1
+                if state["calls"] == 1:
+                    b = b'{"error": "rate limited"}'
+                    self.send_response(429)
+                    if retry_after is not None:
+                        self.send_header("Retry-After", retry_after)
+                else:
+                    b = json.dumps({"model": "m", "choices": [{"message": {"content": "ok"}}]}).encode()
+                    self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(b)))
+                self.end_headers()
+                self.wfile.write(b)
+        return H, state
+
+    def test_429_clamps_long_retry_after_to_30(self):
+        from unittest import mock
+        H, state = self._stateful_429_then_200(retry_after="60")
+        srv, port = _spawn_server(H)
+        waits = []
+        try:
+            ep = {"endpoint": f"http://127.0.0.1:{port}/v1", "api_key": "k", "model": "m"}
+            with mock.patch.object(ac.time, "sleep", lambda s: waits.append(s)):
+                content, model, err = ac.call_endpoint(ep, [{"role": "user", "content": "hi"}], max_attempts=3)
+            self.assertIsNone(err)
+            self.assertEqual(content, "ok")
+            self.assertEqual(state["calls"], 2)   # retried once after the 429
+            self.assertEqual(waits, [30])         # Retry-After: 60 clamped to 30
+        finally:
+            srv.shutdown()
+
+    def test_429_without_retry_after_uses_linear_backoff(self):
+        from unittest import mock
+        H, state = self._stateful_429_then_200(retry_after=None)
+        srv, port = _spawn_server(H)
+        waits = []
+        try:
+            ep = {"endpoint": f"http://127.0.0.1:{port}/v1", "api_key": "k", "model": "m"}
+            with mock.patch.object(ac.time, "sleep", lambda s: waits.append(s)):
+                content, model, err = ac.call_endpoint(ep, [{"role": "user", "content": "hi"}], max_attempts=3)
+            self.assertIsNone(err)
+            self.assertEqual(waits, [6])          # 6 * attempt, attempt == 1
+        finally:
+            srv.shutdown()
+
+    def test_non_last_endpoints_get_capped_timeout(self):
+        from unittest import mock
+        seen = []
+
+        def fake_call_endpoint(ep, messages, max_attempts=1, timeout_override=None):
+            seen.append((ep["endpoint"], max_attempts, timeout_override))
+            if ep["endpoint"].endswith("a/v1"):
+                return None, ep["model"], "boom"
+            return "ok", ep["model"], None
+
+        cfg = {"endpoints": [
+            {"endpoint": "https://a/v1", "api_key": "x", "model": "a", "request_timeout": 60},
+            {"endpoint": "https://b/v1", "api_key": "y", "model": "b", "request_timeout": 60},
+        ]}
+        with mock.patch.object(ac, "call_endpoint", fake_call_endpoint):
+            content, model, err = ac.call_llm(cfg, [{"role": "user", "content": "hi"}])
+        self.assertEqual(content, "ok")
+        self.assertEqual(seen[0], ("https://a/v1", 1, 30))    # non-last: fail fast, capped
+        self.assertEqual(seen[1], ("https://b/v1", 3, None))  # last: full timeout, retries
+
+
+def _spawn_server(handler_cls):
+    srv = HTTPServer(("127.0.0.1", 0), handler_cls)
+    port = srv.server_address[1]
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    return srv, port
+
+
+def _make_handler(name, code, hits, seen_ua):
+    class H(BaseHTTPRequestHandler):
+        def log_message(self, *a):
+            pass
+
+        def do_POST(self):
+            n = int(self.headers.get("Content-Length", 0))
+            self.rfile.read(n)
+            hits[name] = hits.get(name, 0) + 1
+            seen_ua[name] = self.headers.get("User-Agent")
+            if code == 200:
+                b = json.dumps({"model": name,
+                                "choices": [{"message": {"content": "hi from %s" % name}}]}).encode()
+            else:
+                b = b'{"error": {"message": "boom"}}'
+            self.send_response(code)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(b)))
+            self.end_headers()
+            self.wfile.write(b)
+    return H
+
+
+class FallbackTests(unittest.TestCase):
+    def test_failover_to_next_endpoint(self):
+        hits, ua = {}, {}
+        bad, bad_port = _spawn_server(_make_handler("bad", 500, hits, ua))
+        good, good_port = _spawn_server(_make_handler("good", 200, hits, ua))
+        try:
+            cfg = {"endpoints": [
+                {"endpoint": f"http://127.0.0.1:{bad_port}/v1", "api_key": "x", "model": "bad"},
+                {"endpoint": f"http://127.0.0.1:{good_port}/v1", "api_key": "y", "model": "good"},
+            ]}
+            content, model, err = ac.call_llm(cfg, [{"role": "user", "content": "hi"}])
+            self.assertIsNone(err)
+            self.assertEqual(content, "hi from good")
+            self.assertEqual(model, "good")
+            self.assertEqual(hits.get("bad"), 1)   # tried once, then failed over
+            self.assertEqual(hits.get("good"), 1)
+            self.assertTrue((ua.get("good") or "").startswith("AzerothCompanion/"))
+        finally:
+            bad.shutdown()
+            good.shutdown()
+
+    def test_all_endpoints_fail_reports_each(self):
+        hits, ua = {}, {}
+        a, a_port = _spawn_server(_make_handler("a", 500, hits, ua))
+        b, b_port = _spawn_server(_make_handler("b", 502, hits, ua))
+        try:
+            cfg = {"endpoints": [
+                {"endpoint": f"http://127.0.0.1:{a_port}/v1", "api_key": "x", "model": "a"},
+                {"endpoint": f"http://127.0.0.1:{b_port}/v1", "api_key": "y", "model": "b"},
+            ]}
+            content, model, err = ac.call_llm(cfg, [{"role": "user", "content": "hi"}])
+            self.assertIsNone(content)
+            self.assertIn("All 2 endpoints failed", err)
+            self.assertIn("500", err)
+            self.assertIn("502", err)
+        finally:
+            a.shutdown()
+            b.shutdown()
+
+    def test_single_endpoint_error_is_not_aggregated(self):
+        hits, ua = {}, {}
+        srv, port = _spawn_server(_make_handler("solo", 401, hits, ua))
+        try:
+            cfg = {"endpoint": f"http://127.0.0.1:{port}/v1", "api_key": "x", "model": "solo"}
+            content, model, err = ac.call_llm(cfg, [{"role": "user", "content": "hi"}])
+            self.assertIsNone(content)
+            self.assertNotIn("endpoints failed", err)  # single-endpoint message preserved
+            self.assertIn("401", err)
         finally:
             srv.shutdown()
 

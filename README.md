@@ -151,13 +151,16 @@ Then launch the companion **while you play** — keep it running in the backgrou
 
 | Provider | Endpoint | Example free model | Notes |
 |---|---|---|---|
+| **Groq** *(recommended)* | `https://api.groq.com/openai/v1` | `llama-3.3-70b-versatile` | No card; ~30 rpm / 1000 per day; very fast; steadiest free tier |
 | **OpenRouter** | `https://openrouter.ai/api/v1` | `meta-llama/llama-3.3-70b-instruct:free` | No card; `:free` models; ~20 rpm / 50–1000 per day |
-| **Groq** | `https://api.groq.com/openai/v1` | `llama-3.3-70b-versatile` | No card; ~30 rpm / 1000 per day; very fast |
 | **Google Gemini** | `https://generativelanguage.googleapis.com/v1beta/openai/` | `gemini-2.5-flash` | Key from AI Studio; may train on free-tier data |
 | **Ollama (local)** | `http://localhost:11434/v1` | `llama3.2` | 100% offline & private; no key |
 
 Run `python3 azeroth_companion.py --list-presets` to print these.
 Free rosters and limits change often — the `model` field is yours to edit.
+You can also list **several endpoints** and have the companion fall back
+automatically when one is rate-limited or down — see
+[docs/CONFIG.md](docs/CONFIG.md#multiple-endpoints-automatic-fallback).
 
 ---
 
