@@ -3,6 +3,26 @@
 All notable changes to this project are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-06-15
+
+### Added
+- **In-game local boss tips** (`/ac boss`): role-specific dungeon/raid advice
+  served straight from the addon — no `/reload`, no companion, no LLM — so it's
+  safe to use mid-pull. Matches the current instance + target (or a typed name)
+  against the bundled knowledge base and highlights your role. `/ac boss all`
+  shows every role; `/ac boss <name>` looks one up by name.
+- `Core/KnowledgeData.lua`, generated from `companion/knowledge/*.json` by
+  `tools/gen_knowledge_lua.py` so the boss data stays single-sourced (the
+  companion reads the JSON to ground the LLM; the addon reads the baked Lua).
+  Lookup logic mirrors the companion's `KnowledgeBase` for consistent answers.
+- **First-run setup nudges**: the greeting now points out `/ac lang` and
+  `/ac xp` while they're still at defaults (neither is auto-detectable — the
+  client locale drives `auto` language, and no API exposes a realm's XP rate).
+
+### Fixed
+- Addon `.toc` version was left at 0.1.0 in the 0.2.0 release; all client
+  flavors and the companion now report a single, aligned version.
+
 ## [0.2.0] - 2026-06-14
 
 ### Added

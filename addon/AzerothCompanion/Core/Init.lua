@@ -63,6 +63,7 @@ local function printHelp()
   ns.Print("  /ac                 - toggle the window")
   ns.Print("  /ac <question>      - ask directly")
   ns.Print("  /ac get             - fetch the pending answer now")
+  ns.Print("  /ac boss [name]     - local boss tips (no reload, no LLM)")
   ns.Print("  /ac role <auto|tank|healer|dps>")
   ns.Print("  /ac xp <number>     - server XP multiplier (e.g. 5)")
   ns.Print("  /ac lang <auto|it|en|...>")
@@ -82,6 +83,12 @@ local function handleSlash(msg)
     ns.UI.Toggle()
   elseif cmd == "get" or cmd == "refresh" then
     ns.Bridge.Refresh()
+  elseif cmd == "boss" or cmd == "tips" then
+    -- Local, instant: no /reload, no companion, no LLM. "all" shows every role.
+    local q = rest or ""
+    local allRoles = false
+    local stripped = q:gsub("^%s*all%s*", function() allRoles = true; return "" end)
+    ns.Knowledge.Show({ query = stripped, allRoles = allRoles })
   elseif cmd == "help" then
     printHelp()
   elseif cmd == "show" then
@@ -181,6 +188,20 @@ boot:SetScript("OnEvent", function(self, event, arg1)
       ns.Config.db.greeted = true
       ns.Print("loaded! Type |cffffd100/ac|r to open, or |cffffd100/ac help|r. "
         .. "Remember to run the companion app for answers.")
+
+      -- First-run setup nudges. Neither of these is auto-detectable (language
+      -- "auto" follows the CLIENT locale, not what you type; no API exposes a
+      -- realm's XP rate), so point them out while they're still at defaults.
+      if ns.Config.Get("language") == "auto" then
+        ns.Print(string.format(
+          "tip: replies follow your client locale (now |cffffd100%s|r). "
+          .. "Writing in another language? Set it: |cffffd100/ac lang it|r (or en, de, ...).",
+          ns.Config.GetEffectiveLanguage()))
+      end
+      if (ns.Config.Get("xpMultiplier") or 1) == 1 then
+        ns.Print("tip: on a boosted realm set the rate for quest-skip advice: "
+          .. "|cffffd100/ac xp 5|r. Check anytime with |cffffd100/ac status|r.")
+      end
     end
   end
 end)
