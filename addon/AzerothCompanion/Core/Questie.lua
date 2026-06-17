@@ -77,14 +77,32 @@ local function areaName(areaId)
   return ok and name or nil
 end
 
--- Pull the first spawn out of a Questie spawns table { [areaId] = {{x,y},...} }.
+-- The player's current zone name, set per call in GetQuestData so spawn
+-- selection can prefer spawns where the player already is.
+local currentZone = nil
+
+-- Pick a spawn from a Questie spawns table { [areaId] = {{x,y},...} }.
+-- Prefers the player's current zone; otherwise the area with the most spawn
+-- points. Returns { areaId, zone, x, y, count } where `count` is the number of
+-- spawn points in the chosen area -- a density hint: a higher count means the
+-- objective is faster to complete there (lets the assistant flag dense quests).
 local function firstSpawn(spawns)
   if type(spawns) ~= "table" then return nil end
+  local bestArea, bestCoord, bestCount, bestZone = nil, nil, -1, nil
   for areaId, coords in pairs(spawns) do
     if type(coords) == "table" and type(coords[1]) == "table" then
-      local c = coords[1]
-      return { areaId = areaId, zone = areaName(areaId), x = c[1], y = c[2] }
+      local zone = areaName(areaId)
+      local count = #coords
+      if currentZone and zone and zone == currentZone then
+        return { areaId = areaId, zone = zone, x = coords[1][1], y = coords[1][2], count = count }
+      end
+      if count > bestCount then
+        bestArea, bestCoord, bestCount, bestZone = areaId, coords[1], count, zone
+      end
     end
+  end
+  if bestCoord then
+    return { areaId = bestArea, zone = bestZone, x = bestCoord[1], y = bestCoord[2], count = bestCount }
   end
   return nil
 end
@@ -111,11 +129,28 @@ local function objectSpawn(id)
   return nil
 end
 
--- Returns a compact "where to go" table for a quest, or nil.
--- { finisher = {name,zone,x,y}, objectives = { {name,zone,x,y}, ... } }
-function Questie.GetQuestData(questID)
+-- True when the quest leads to or follows other quests (part of a chain). Such
+-- quests are worth keeping even when their XP looks low. Best-effort: these are
+-- private Questie fields with no stability guarantee, so each access is checked.
+local function isChained(quest)
+  if type(quest) ~= "table" then return nil end
+  local function filled(v) return type(v) == "table" and next(v) ~= nil end
+  if type(quest.nextQuestInChain) == "number" and quest.nextQuestInChain ~= 0 then return true end
+  if filled(quest.childQuests) or filled(quest.preQuestSingle)
+     or filled(quest.preQuestGroup) or filled(quest.exclusiveTo) then
+    return true
+  end
+  return false
+end
+
+-- Returns a compact "where to go" table for a quest, or nil. `zone` is the
+-- player's current zone, used to prefer nearby spawns.
+-- { finisher = {name,zone,x,y,count}, objectives = { {name,zone,x,y,count}, ... },
+--   chain = true }   -- `chain` is lifted onto the quest entry by Context.lua.
+function Questie.GetQuestData(questID, zone)
   if not Questie.IsAvailable() or not questID then return nil end
 
+  currentZone = zone
   local ok, result = pcall(function()
     local data = { objectives = {} }
 
@@ -145,6 +180,7 @@ function Questie.GetQuestData(questID)
     if QuestieDB and QuestieDB.GetQuest then
       local quest = QuestieDB.GetQuest(questID)
       if quest then
+        if isChained(quest) then data.chain = true end
         if quest.Finisher and quest.Finisher.Id then
           local s = npcSpawn(quest.Finisher.Id)
           if s then
@@ -171,10 +207,11 @@ function Questie.GetQuestData(questID)
     end
 
     if #data.objectives == 0 then data.objectives = nil end
-    if not data.finisher and not data.objectives then return nil end
+    if not data.finisher and not data.objectives and not data.chain then return nil end
     return data
   end)
 
+  currentZone = nil
   return ok and result or nil
 end
 
