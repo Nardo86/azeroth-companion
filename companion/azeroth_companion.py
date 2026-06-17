@@ -20,6 +20,7 @@ import argparse
 import base64
 import glob
 import json
+import math
 import os
 import re
 import socket
@@ -29,7 +30,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 PROTOCOL = 1
 ADDON_FOLDER = "AzerothCompanion"
 
@@ -411,18 +412,36 @@ def build_system_prompt(ctx, cfg, kb):
         "(a quest's 'coords' block). Otherwise guide by zone, sub-zone, landmarks and known "
         "locations for this version of the game, and say when you are not certain."
     )
+    parts.append(
+        "When a COMPUTED block is present, its XP numbers, quest ranking, clusters and compass "
+        "directions are AUTHORITATIVE: use them verbatim and never give a direction that "
+        "contradicts or goes beyond it. The compass points (N/NE/E/...) are measured from the "
+        "player's position - relay them as-is. If you have no coords or bearing for a place, say "
+        "plainly that you don't know the exact way instead of guessing a direction."
+    )
     parts.append("Player role: " + role + ". " + ROLE_LENS.get(role, ROLE_LENS["unknown"]))
     parts.append(
         "QUESTS: when asked about quests, tell the player exactly what to do for their active "
         "quests - which mobs to kill, items to gather, or NPCs to talk to, and roughly where. "
         "Use objective progress (have/need) to focus on what's left."
     )
+    parts.append(
+        "QUEST COORDS: a quest may carry a 'coords' block (a 'finisher' plus per-objective spots), "
+        "each with a 'count' = how many spawn points are known (higher = denser, faster to finish "
+        "there) and a 'zone'. Use 'count' to recommend the quickest, least-scattered objectives, "
+        "and when an objective's 'zone' differs from the player's current location, say it is in "
+        "another zone. A quest marked 'chain: true' is part of a quest chain - do not advise "
+        "dropping it for XP even if its reward looks small."
+    )
     if xp and float(xp) > 1:
         parts.append(
             f"This realm runs {xp}x XP. Help optimise leveling: flag quests that have turned "
             "trivial/gray (their difficulty is well below the player) as skippable for XP, BUT keep "
-            "quests that belong to a chain leading to a reward, a dungeon/attunement, or a "
-            "breadcrumb to the next zone. Prefer dense kill quests and dungeon quests."
+            "quests that belong to a chain (chain: true), lead to a reward/attunement, or are a "
+            "breadcrumb to the next zone. Prefer dense kill quests (high objective 'count' with "
+            "objectives in the current zone). Treat dungeon quests as time-costly (they need a "
+            "group and travel): flag that cost rather than always recommending them, and call out "
+            "long fetch/escort quests with scattered or far-away objectives as low-priority."
         )
     parts.append(
         "DUNGEONS/RAIDS: if the player is in an instance or asks about one, give role-specific "
@@ -448,6 +467,173 @@ def trim_context(ctx):
     return c
 
 
+# ----------------------------------------------------------------------------
+# computed guidance (deterministic facts so the model narrates, not guesses)
+# ----------------------------------------------------------------------------
+
+_COMPASS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+
+
+def _num(n):
+    """Compact number: 124000 -> '124k', 8800 -> '9k', 850 -> '850'."""
+    try:
+        n = int(round(float(n)))
+    except (TypeError, ValueError):
+        return str(n)
+    return f"{n / 1000:.0f}k" if abs(n) >= 1000 else str(n)
+
+
+def _bearing(px, py, tx, ty):
+    """Compass point + map-percent distance from player to target. WoW zone
+    coords: x 0..100 west->east, y 0..100 north->south, so North = -y."""
+    east, north = tx - px, py - ty
+    dist = math.hypot(east, north)
+    deg = (math.degrees(math.atan2(east, north)) + 360) % 360
+    return _COMPASS[int((deg + 22.5) // 45) % 8], dist
+
+
+def _dist_word(d):
+    if d < 8:
+        return "right here"
+    if d < 20:
+        return "nearby"
+    if d < 45:
+        return "across the zone"
+    return "far across the zone"
+
+
+def _cluster(points, radius=18.0):
+    """Greedy spatial clustering of (x, y, label) on the 0..100 map."""
+    clusters = []
+    for x, y, label in points:
+        for c in clusters:
+            if math.hypot(x - c["cx"], y - c["cy"]) <= radius:
+                n = c["n"]
+                c["cx"] = (c["cx"] * n + x) / (n + 1)
+                c["cy"] = (c["cy"] * n + y) / (n + 1)
+                c["n"] = n + 1
+                c["labels"].add(label)
+                break
+        else:
+            clusters.append({"cx": x, "cy": y, "n": 1, "labels": {label}})
+    return clusters
+
+
+def compute_guidance(ctx):
+    """Deterministic leveling + navigation facts, so the model narrates instead
+    of guessing XP math or directions. Returns a text block or '' when empty."""
+    player = ctx.get("player") or {}
+    loc = ctx.get("location") or {}
+    prefs = ctx.get("prefs") or {}
+    quests = ctx.get("quests") or []
+    try:
+        rate = float(prefs.get("xpMultiplier") or 1) or 1.0
+    except (TypeError, ValueError):
+        rate = 1.0
+    px, py, pzone = loc.get("x"), loc.get("y"), loc.get("zone")
+
+    lines = []
+
+    # --- Leveling / efficiency ---
+    xp = player.get("xp") or {}
+    to_level = xp.get("toLevel")
+    have_gap = isinstance(to_level, (int, float)) and to_level > 0
+
+    ranked = []
+    for q in quests:
+        if q.get("isComplete") or not q.get("rewardXP"):
+            continue
+        coords = q.get("coords") or {}
+        objs = coords.get("objectives") or []
+        zones = [o.get("zone") for o in objs if o.get("zone")]
+        fin = coords.get("finisher") or {}
+        here = bool(pzone) and (pzone in zones or fin.get("zone") == pzone)
+        ranked.append({
+            "title": q.get("title", "?"),
+            "eff": q["rewardXP"] * rate,
+            "diff": q.get("difficulty"),
+            "chain": bool(q.get("chain")),
+            "dens": max([o.get("count", 0) for o in objs] or [0]),
+            "here": here,
+            "other_zone": None if here else (next((z for z in zones if z), None) or fin.get("zone")),
+        })
+    ranked.sort(key=lambda r: r["eff"], reverse=True)
+    skippable = {r["title"] for r in ranked if r["diff"] == "trivial" and not r["chain"]}
+
+    if ranked:
+        if have_gap:
+            head = f"Level {player.get('level', '?')} -> next: {_num(to_level)} XP to go"
+            if xp.get("rested"):
+                head += f" ({_num(xp['rested'])} of it at the rested bonus rate)"
+            lines.append(head + ".")
+        if rate > 1:
+            rate_str = str(int(rate)) if float(rate).is_integer() else str(rate)
+            lines.append(f"XP below = client value x{rate_str} realm rate (estimate).")
+        lines.append("Quests by XP value (highest first):")
+        for r in ranked[:8]:
+            tags = []
+            if have_gap:
+                tags.append(f"{r['eff'] / to_level * 100:.0f}% of the level")
+            if r["chain"]:
+                tags.append("chain - keep")
+            if r["dens"] >= 6:
+                tags.append(f"dense: {r['dens']} spots")
+            if r["here"]:
+                tags.append("in this zone")
+            elif r["other_zone"]:
+                tags.append(f"in {r['other_zone']}")
+            if r["diff"] == "trivial":
+                tags.append("GRAY")
+            elif r["diff"] == "low":
+                tags.append("green/soon gray")
+            suffix = " (" + ", ".join(tags) + ")" if tags else ""
+            lines.append(f'  - "{r["title"]}" ~{_num(r["eff"])} XP{suffix}')
+
+        if have_gap:
+            acc, picks = 0, []
+            for r in ranked:
+                if r["diff"] == "trivial" and not r["chain"]:
+                    continue
+                acc += r["eff"]
+                picks.append(r["title"])
+                if acc >= to_level:
+                    break
+            if picks and acc >= to_level:
+                lines.append(f"~{len(picks)} of these cover the level: "
+                             + ", ".join('"%s"' % p for p in picks) + ".")
+
+        if skippable:
+            lines.append("Skippable (gray, not in a chain): "
+                         + ", ".join('"%s"' % s for s in list(skippable)[:6]) + ".")
+
+    # --- Navigation: clusters + compass bearings within the current zone ---
+    if isinstance(px, (int, float)) and isinstance(py, (int, float)) and pzone:
+        points = []
+        for q in quests:
+            if q.get("isComplete") or q.get("title") in skippable:
+                continue
+            for o in (q.get("coords") or {}).get("objectives") or []:
+                if o.get("zone") == pzone and isinstance(o.get("x"), (int, float)) \
+                        and isinstance(o.get("y"), (int, float)):
+                    points.append((o["x"], o["y"], q.get("title", "?")))
+        if points:
+            clusters = _cluster(points)
+            for c in clusters:
+                c["dir"], c["dist"] = _bearing(px, py, c["cx"], c["cy"])
+            clusters.sort(key=lambda c: (-len(c["labels"]), c["dist"]))
+            lines.append(f"Objective clusters in {pzone} (from your position {px:.0f},{py:.0f}):")
+            for c in clusters[:4]:
+                n = len(c["labels"])
+                names = ", ".join('"%s"' % t for t in list(c["labels"])[:4])
+                lines.append(f"  - to the {c['dir']} ({_dist_word(c['dist'])}), "
+                             f"{n} quest{'s' if n != 1 else ''}: {names}")
+
+    if not lines:
+        return ""
+    return ("COMPUTED (authoritative - use these exact numbers and directions, "
+            "do not contradict them):\n" + "\n".join(lines))
+
+
 def build_messages(req, cfg, kb):
     ctx = req.get("context", {}) or {}
     question = req.get("question", "")
@@ -465,6 +651,9 @@ def build_messages(req, cfg, kb):
 
     user_parts = ["QUESTION: " + question, "", "CONTEXT (JSON):",
                   json.dumps(trim_context(ctx), ensure_ascii=False)]
+    guidance = compute_guidance(ctx)
+    if guidance:
+        user_parts += ["", guidance]
     if kb_block:
         user_parts += ["", kb_block]
     user = "\n".join(user_parts)
@@ -798,11 +987,16 @@ def selftest(cfg, kb):
     print("== self-test ==")
     sample = {"protocol": 1, "requests": [{"id": "1-1", "ts": 1, "question": "where do I turn in?",
               "context": {"client": {"interface": 30300},
-                          "player": {"role": "dps", "level": 72, "class": "Mage"},
+                          "player": {"role": "dps", "level": 72, "class": "Mage",
+                                     "xp": {"cur": 100000, "max": 200000, "toLevel": 100000, "rested": 20000}},
+                          "location": {"zone": "Howling Fjord", "x": 50, "y": 50},
                           "prefs": {"language": "it", "verbosity": "normal", "xpMultiplier": 5},
                           "instance": {"name": "Utgarde Keep"},
-                          "quests": [{"title": "Disloyal?", "level": 70,
-                                      "objectives": [{"text": "Proof: 0/1"}]}]}}]}
+                          "quests": [{"title": "Disloyal?", "level": 70, "rewardXP": 9000,
+                                      "objectives": [{"text": "Proof: 0/1"}],
+                                      "coords": {"source": "questie",
+                                                 "objectives": [{"name": "Foe", "zone": "Howling Fjord",
+                                                                 "x": 20, "y": 50, "count": 11}]}}]}}]}
     b64 = base64.b64encode(json.dumps(sample).encode()).decode()
     sv = 'AzerothCompanionDB = {\n\t["outbox_b64"] = "%s",\n}\n' % b64
     reqs = parse_outbox(sv)
@@ -814,6 +1008,13 @@ def selftest(cfg, kb):
     assert "Italian" in msgs[0]["content"], "language instruction missing"
     assert "5x XP" in msgs[0]["content"] or "5.0x XP" in msgs[0]["content"] or "5x" in msgs[0]["content"]
     print("  system prompt: OK (version + language + xp)")
+
+    # computed guidance: XP math, density and a deterministic westward bearing.
+    assert "COMPUTED" in msgs[1]["content"], "computed guidance block missing"
+    assert "45k XP" in msgs[1]["content"], "effective XP (9000 x5) not computed"
+    assert "to the W " in msgs[1]["content"], "westward bearing not computed"
+    assert _bearing(50, 50, 50, 20)[0] == "N" and _bearing(50, 50, 80, 50)[0] == "E"
+    print("  computed guidance: OK (XP x rate + clusters + compass)")
 
     kb_block = kb.format_for("Utgarde Keep", "how do I tank Ingvar?", None, "tank")
     print("  KB lookup for 'Utgarde Keep': %s" % ("OK" if "Instance:" in kb_block else "EMPTY"))

@@ -3,6 +3,27 @@
 All notable changes to this project are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] - 2026-06-17
+
+### Added
+- **Richer quest coordinates from Questie/pfQuest**: each objective/turn-in spot
+  now carries a `count` (number of known spawn points) as a density hint, so the
+  assistant can steer you to the quickest, least-scattered objectives instead of
+  ranking purely by XP. The helper now prefers spawns in your current zone and
+  flags objectives that are in another zone. Quests detected as part of a chain
+  are marked `chain: true` so they are not suggested as skippable for XP.
+- Leveling guidance reworked accordingly: dungeon and long fetch/escort quests
+  are now flagged as time-costly rather than always recommended.
+- **XP-to-level in context** (`player.xp`: `cur`/`max`/`toLevel`/`rested`, absent
+  at max level) via `Compat.GetXP`, so advice can be measured against the actual
+  XP remaining instead of a vague level estimate.
+- **Computed guidance block**: the companion now does the math deterministically
+  and injects an authoritative `COMPUTED` block the model just narrates —
+  effective quest XP at the realm rate, each quest as a % of the level, how many
+  quests cover the level, which gray quests are skippable (chains excluded), and
+  in-zone objective **clusters with compass bearings** computed from the player's
+  position. Directions are no longer left to the model to guess.
+
 ## [0.3.0] - 2026-06-15
 
 ### Added

@@ -26,6 +26,7 @@ read_globals = {
   "GetSpecialization", "GetSpecializationInfo", "GetSpecializationRole",
   "UnitClass", "UnitRace", "UnitFactionGroup", "UnitLevel", "UnitName",
   "UnitExists", "UnitClassification", "UnitIsDead", "UnitCanAttack",
+  "UnitXP", "UnitXPMax", "GetXPExhaustion", "GetMaxPlayerLevel",
   "GetRealZoneText", "GetZoneText", "GetSubZoneText", "GetMinimapZoneText",
   "SetMapToCurrentZone", "GetPlayerMapPosition", "GetMapInfo",
   "IsInInstance", "GetInstanceInfo", "GetNumGroupMembers", "IsInRaid",

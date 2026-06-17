@@ -23,14 +23,14 @@ end
 -- Pick coordinate data ("where to go") for a quest from the best available
 -- helper, or nil. Tries Questie first, then pfQuest; both are read-only runtime
 -- sources, and reading the version's own helper keeps this version-agnostic.
-local function getCoords(questID)
+local function getCoords(questID, zone)
   if not questID or not ns.Config.Get("useCoords") then return nil end
   if ns.Questie and ns.Questie.IsAvailable() then
-    local d = ns.Questie.GetQuestData(questID)
+    local d = ns.Questie.GetQuestData(questID, zone)
     if d then d.source = d.source or "questie"; return d end
   end
   if ns.PfQuest and ns.PfQuest.IsAvailable() then
-    local d = ns.PfQuest.GetQuestData(questID)
+    local d = ns.PfQuest.GetQuestData(questID, zone)
     if d then return d end
   end
   return nil
@@ -40,6 +40,7 @@ end
 local function buildQuests()
   local Compat = ns.Compat
   local playerLevel = Compat.GetPlayerLevel()
+  local playerZone  = Compat.GetZone()
 
   local quests = {}
   local num = Compat.GetNumQuestLogEntries() or 0
@@ -62,8 +63,14 @@ local function buildQuests()
       if xp then entry.rewardXP = xp end
 
       -- Optional: enrich with coordinates ("where to go") from Questie/pfQuest.
-      local coords = getCoords(q.questID)
-      if coords then entry.coords = coords end
+      -- Pass the current zone so the helper prefers spawns where we already are.
+      local coords = getCoords(q.questID, playerZone)
+      if coords then
+        -- `chain` is quest-relationship metadata, not spatial: lift it onto the
+        -- entry and keep `coords` purely about where to go.
+        if coords.chain ~= nil then entry.chain = coords.chain; coords.chain = nil end
+        entry.coords = coords
+      end
 
       quests[#quests + 1] = entry
     end
@@ -104,6 +111,7 @@ function Context.Build()
       faction = Compat.GetFactionGroup(),
       spec    = spec,
       role    = role,
+      xp      = Compat.GetXP(),   -- nil at max level; { cur, max, toLevel, rested }
     },
     location = {
       zone     = realZone,

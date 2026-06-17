@@ -121,6 +121,28 @@ function Compat.GetPlayerLevel()
   return UnitLevel("player") or 0
 end
 
+-- Experience toward the next level, or nil at max level / when unavailable.
+-- { cur, max, toLevel, rested } -- rested is the XP pool still earning the
+-- rested (bonus-rate) bonus (0 when none). Drives leveling-efficiency advice.
+-- UnitXP/UnitXPMax exist in every client; GetXPExhaustion is best-effort.
+function Compat.GetXP()
+  local lvl    = UnitLevel and UnitLevel("player")
+  local maxLvl = GetMaxPlayerLevel and GetMaxPlayerLevel()
+  if lvl and maxLvl and lvl >= maxLvl then return nil end  -- at cap: no XP bar
+
+  if not UnitXP or not UnitXPMax then return nil end
+  local cur = UnitXP("player")
+  local max = UnitXPMax("player")
+  if type(cur) ~= "number" or type(max) ~= "number" or max <= 0 then return nil end
+
+  local rested = 0
+  if GetXPExhaustion then
+    local ok, r = pcall(GetXPExhaustion)
+    if ok and type(r) == "number" then rested = r end
+  end
+  return { cur = cur, max = max, toLevel = max - cur, rested = rested }
+end
+
 -- Returns localizedClass, classToken (e.g. "Guerriero", "WARRIOR")
 function Compat.GetPlayerClass()
   local localized, token = UnitClass("player")

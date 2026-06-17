@@ -82,7 +82,8 @@ Built by `Core/Context.lua` from live game state:
   "client":   { "interface": 30300, "locale": "enUS" },
   "prefs":    { "language": "it", "verbosity": "normal", "xpMultiplier": 5 },
   "player":   { "name": "...", "level": 74, "class": "Hunter", "classId": "HUNTER",
-                "race": "...", "faction": "Alliance", "spec": "Survival", "role": "dps" },
+                "race": "...", "faction": "Alliance", "spec": "Survival", "role": "dps",
+                "xp": { "cur": 380000, "max": 500000, "toLevel": 120000, "rested": 40000 } },
   "location": { "zone": "Howling Fjord", "subZone": "...", "x": 60.3, "y": 62.9 },
   "instance": { "name": "Utgarde Keep", "type": "party", "difficulty": "Heroic",
                 "groupType": "party", "groupSize": 5 },
@@ -90,11 +91,11 @@ Built by `Core/Context.lua` from live game state:
   "target":   { "name": "...", "classification": "elite", "level": 74, "isDead": false },
   "quests": [
     { "title": "...", "level": 72, "questID": 11378, "isComplete": false,
-      "difficulty": "standard", "rewardXP": 25200,
+      "difficulty": "standard", "rewardXP": 25200, "chain": true,
       "objectives": [ { "text": "Slain Nerubians: 3/8", "have": 3, "need": 8, "finished": false } ],
       "coords":     { "source": "questie",
                       "finisher": { "name": "...", "zone": "...", "x": 60, "y": 63 },
-                      "objectives": [ { "name": "...", "zone": "...", "x": 45, "y": 21 } ] }
+                      "objectives": [ { "name": "...", "zone": "...", "x": 45, "y": 21, "count": 12 } ] }
     }
   ]
 }
@@ -104,6 +105,21 @@ Built by `Core/Context.lua` from live game state:
 It is read at runtime from **Questie** or **pfQuest**'s in-memory DB (never
 bundled); `source` says which one. Reading the version's own helper keeps the
 addon version-agnostic.
+
+Each `finisher`/`objectives[]` spot also carries `count`: the number of known
+spawn points for that NPC/object (a **density hint** — a higher count means the
+objective is faster to complete there). The helper prefers spawns in the
+player's current `location.zone`; when none exist there it returns the densest
+area, so an objective's `zone` may differ from the player's — surface that as
+"in another zone". `quests[].chain` (boolean, Questie only, best-effort) marks a
+quest that leads to or follows other quests: keep it even when its XP looks low.
+
+`player.xp` (`cur`/`max`/`toLevel`/`rested`) is the bar toward the next level; it
+is **absent at max level**. The companion uses it (with `prefs.xpMultiplier`) to
+compute a leveling/efficiency ranking and, from `location` + `coords`, spatial
+objective clusters and compass bearings — injected into the prompt as a
+`COMPUTED` block so the model relays exact numbers and directions instead of
+guessing. That block is internal to the companion, not part of this wire format.
 
 ## State machine (survives reloads)
 

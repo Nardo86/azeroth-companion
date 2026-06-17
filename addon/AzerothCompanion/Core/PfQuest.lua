@@ -61,17 +61,27 @@ local function zoneName(zoneId)
   return ok and name or nil
 end
 
--- Accepts a pfQuest unit/object data entry and returns a single {x,y,zoneId}.
+-- The player's current zone name, set per call so we can prefer nearby spawns.
+local currentZone = nil
+
+-- Accepts a pfQuest unit/object data entry and returns a single
+-- { x, y, zoneId, count }. Prefers a coord in the player's current zone and
+-- reports `count` (number of known spawn points) as a density hint -- more
+-- spawns means the objective is faster to finish.
 -- Tolerates either { coords = {...} } or the coords list directly.
 local function firstCoord(entry)
   if type(entry) ~= "table" then return nil end
   local list = entry.coords or entry
   if type(list) ~= "table" then return nil end
+  local best, count = nil, 0
   for _, c in ipairs(list) do
     if type(c) == "table" and type(c[1]) == "number" and type(c[2]) == "number" then
-      return { x = c[1], y = c[2], zoneId = c[3] }
+      count = count + 1
+      if not best then best = c end
+      if currentZone and zoneName(c[3]) == currentZone then best = c end
     end
   end
+  if best then return { x = best[1], y = best[2], zoneId = best[3], count = count } end
   return nil
 end
 
@@ -93,9 +103,10 @@ end
 
 -- Same return shape as Questie.GetQuestData:
 -- { source="pfquest", finisher = {name,zone,x,y}, objectives = { {name,zone,x,y}, ... } }
-function PfQuest.GetQuestData(questID)
+function PfQuest.GetQuestData(questID, zone)
   if not PfQuest.IsAvailable() or not questID then return nil end
 
+  currentZone = zone
   local ok, result = pcall(function()
     local d = db()
     local q = d.quests and d.quests.data and d.quests.data[questID]
@@ -138,6 +149,7 @@ function PfQuest.GetQuestData(questID)
     return data
   end)
 
+  currentZone = nil
   return ok and result or nil
 end
 

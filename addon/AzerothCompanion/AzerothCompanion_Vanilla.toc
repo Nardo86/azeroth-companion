@@ -2,7 +2,7 @@
 ## Title: Azeroth Companion
 ## Notes: In-game AI assistant for quests, dungeons and raids. Bridged to an OpenAI-compatible endpoint via the companion app.
 ## Author: Nardo86
-## Version: 0.3.0
+## Version: 0.4.0
 ## SavedVariables: AzerothCompanionDB
 ## SavedVariablesPerCharacter: AzerothCompanionCharDB
 ## OptionalDeps: Questie, pfQuest
